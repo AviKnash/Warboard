@@ -1,10 +1,11 @@
 interface PlayerScreenProps {
-    sentence : string
+    sentence : JSX.Element[],
+    pressedKey: string | null
 }
 
 const PlayerScreen = ({sentence}: PlayerScreenProps) => {
   return (
-    <div className="border border-violet-800 p-4">{sentence}</div>
+    <div className="border border-violet-800 p-4" >{sentence}</div>
   )
 }
 

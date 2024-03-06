@@ -1,5 +1,5 @@
 interface EnemyScreenProps {
-    sentence : string
+    sentence : JSX.Element[]
 }
 
 const EnemyScreen = ({sentence}:EnemyScreenProps) => {
