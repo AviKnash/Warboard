@@ -4,7 +4,7 @@ import UserInput from "../components/UserInput";
 import useGame from "../../hooks/useGame";
 
 const GamePage = () => {
-  const { state, words } = useGame();
+  const { state, words, typed } = useGame();
 
   return (
     <>
@@ -12,7 +12,7 @@ const GamePage = () => {
         <div className="relative leading-relaxed break-all grid text-blue-900 justify-center">
           <UserInput
             className="absolute inset-0 z-10 text-lg"
-            userInput={"Hello"}
+            userInput={typed}
           />
           <EnemyScreen
             sentence={words}
