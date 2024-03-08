@@ -1,10 +1,11 @@
 interface EnemyScreenProps {
-    sentence : JSX.Element[]
+    sentence : string,
+    className :string
 }
 
-const EnemyScreen = ({sentence}:EnemyScreenProps) => {
+const EnemyScreen = ({sentence,className}:EnemyScreenProps) => {
   return (
-    <div className="border border-violet-800 p-4">{sentence}</div>
+    <div className={className}>{sentence}</div>
   )
 }
 

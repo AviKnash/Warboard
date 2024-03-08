@@ -1,64 +1,26 @@
-import { useEffect, useRef, useState } from "react";
-import wordArray from "../../constants/words";
 import EnemyScreen from "./EnemyScreen";
 import PlayerScreen from "./PlayerScreen";
-
-const wordLength = wordArray.length;
-
-const randomWord = (words: string[], totalLength: number) => {
-  const randomIndex = Math.floor(Math.random() * totalLength);
-
-  return words[randomIndex];
-};
-
-const printSentence = () => {
-  const sentenceDivs = [];
-
-  for (let i = 0; i < 100; i++) {
-    const newWord = randomWord(wordArray, wordLength);
-
-    const wordDiv = (
-        <div className="inline-block mx-1" key={i}>
-          {newWord.split('').map((letter, index) => (
-            <span key={index}>{letter}</span>
-          ))}
-        </div>
-      );
-
-    sentenceDivs.push(wordDiv);
-  }
-
-  return sentenceDivs;
-};
-
-
+import UserInput from "../components/UserInput";
+import useGame from "../../hooks/useGame";
 
 const GamePage = () => {
-    const sentenceRef = useRef(printSentence());
-    const sentence = sentenceRef.current;
-  const [pressedKey, setPressedKey] = useState<string | null>(null);
-
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      const pressedLetter = event.key.toLowerCase();
-      setPressedKey(pressedLetter);
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, []);
-
-  console.log(pressedKey)
+  const { state, words } = useGame();
 
   return (
     <>
       <div className="grid grid-cols-2">
-        <EnemyScreen sentence={sentence} />
+        <div className="relative leading-relaxed break-all grid text-blue-900 justify-center">
+          <UserInput
+            className="absolute inset-0 z-10 text-lg"
+            userInput={"Hello"}
+          />
+          <EnemyScreen
+            sentence={words}
+            className="absolute inset-0 z-10 border border-violet-500 text-stone-500 text-lg"
+          />
+        </div>
 
-        <PlayerScreen sentence={sentence} pressedKey={pressedKey}/>
+        <PlayerScreen sentence={words} />
       </div>
     </>
   );
