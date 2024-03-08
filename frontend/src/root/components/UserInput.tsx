@@ -26,14 +26,15 @@ const Character = ({
   actual: string;
   expected: string;
 }) => {
-  const isCorrect = actual === "expected";
+  const isCorrect = actual === expected;
   const isWhiteSpace = expected === " ";
+  console.log({isCorrect, isWhiteSpace})
   const textClassName =
     isCorrect && !isWhiteSpace
-      ? "text-blue-500"
+      ? "text-blue-800"
       : !isCorrect && isWhiteSpace
-      ? "bg-red-500/50"
-      : "text-red-500";
+      ? "bg-red"
+      : "text-red";
 
   return <span className={textClassName}>{expected}</span>;
 };
