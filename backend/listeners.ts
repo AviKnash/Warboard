@@ -16,7 +16,11 @@ export function setupListeners(io: Server) {
       if (rooms.has(roomId)) {
         const game = rooms.get(roomId);
         if (!game) return socket.emit("error", "Game not found");
+        game.joinPlayer(socket.id, name, socket);
       } else {
+        const game = new Game(roomId, io, socket.id);
+        rooms.set(roomId, game);
+        game.joinPlayer(socket.id, name, socket);
       }
     });
   });
