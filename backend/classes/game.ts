@@ -1,5 +1,6 @@
 import { Server, Socket } from "socket.io";
 import { generateParagraph } from "../utils/generateParagraph";
+import { rooms } from "../listeners";
 
 export class Game {
   gameStatus: "not-started" | "in-progress" | "finished";
@@ -70,6 +71,45 @@ export class Game {
 
       this.io.to(this.gameId).emit("player-score", { id: socket.id, score });
 
+      socket.on("leave", () => {
+        if (socket.id === this.gameHost) {
+          this.players = this.players.filter(
+            (player) => player.id !== socket.id
+          );
+
+          if (this.players.length !== 0) {
+            this.gameHost = this.players[0].id;
+            this.io.to(this.gameId).emit("new-host", this.gameHost);
+            this.io.to(this.gameId).emit("player-left", socket.id);
+          } else {
+            rooms.delete(this.gameId);
+          }
+        }
+
+        socket.leave(this.gameId);
+        this.players = this.players.filter((player) => player.id !== socket.id);
+        this.io.to(this.gameId).emit("player-left", socket.id);
+      });
+
+      socket.on("disconnect", () => {
+        if (socket.id === this.gameHost) {
+          this.players = this.players.filter(
+            (player) => player.id !== socket.id
+          );
+
+          if (this.players.length !== 0) {
+            this.gameHost = this.players[0].id;
+            this.io.to(this.gameId).emit("new-host", this.gameHost);
+            this.io.to(this.gameId).emit("player-left", socket.id);
+          } else {
+            rooms.delete(this.gameId);
+          }
+        }
+
+        socket.leave(this.gameId);
+        this.players = this.players.filter((player) => player.id !== socket.id);
+        this.io.to(this.gameId).emit("player-left", socket.id);
+      });
     });
 
     

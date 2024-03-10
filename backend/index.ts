@@ -18,14 +18,3 @@ const io = new Server(server, {
 
 setupListeners(io)
 
-io.on("connection", (socket) => {
-  console.log(`User Connected: ${socket.id}`);
-
-  socket.on("send_message", (data) => {
-    socket.broadcast.emit("recieve_message",data)
-  });
-});
-
-server.listen(PORT, () => {
-  console.log(`Server is running on ${PORT}`);
-});

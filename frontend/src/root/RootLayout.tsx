@@ -1,15 +1,16 @@
-// import {LeftSideBar,BottomBar,TopBar } from "@/components/shared";
+
 import { Outlet } from "react-router-dom";
+import TopBar from "./components/TopBar";
 
 const RootLayout = () => {
   return (
-    <div>
-      {/* <TopBar /> */}
+    <>
+      <TopBar />
 
       <section>
         <Outlet />
       </section>
-    </div>
+    </>
   );
 };
 
