@@ -74,3 +74,10 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+
+  .cursor {
+    @apply bg-red-700
+  }
+}

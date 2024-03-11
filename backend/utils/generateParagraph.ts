@@ -6,7 +6,7 @@ const generatedWords = () => {
 
 export async function generateParagraph() {
   try {
-    const response = await fetch("http://metaphorpsum.com/paragraphs/10");
+    const response = await fetch("http://metaphorpsum.com/paragraphs/3");
 
     if (!response.ok) {
       throw new Error();
