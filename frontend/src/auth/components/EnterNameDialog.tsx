@@ -3,7 +3,6 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
@@ -15,7 +14,7 @@ import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { FormEvent } from "react";
-import { toast, useToast } from "@/components/ui/use-toast";
+import {  useToast } from "@/components/ui/use-toast";
 
 export function EnterNameDialog() {
   const { toast } = useToast();
