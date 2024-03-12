@@ -6,14 +6,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import EnemyTypingParagraph from "../components/EnemyTypingParagraph";
-import { GameProps } from "@/types";
+import { EnemyGameProps } from "@/types";
 
 const EnemyScreen = ({
-  gameId,
   ioInstance,
-  gameStatus,
   paragraph,
-}: GameProps) => {
+}: EnemyGameProps) => {
   return (
     <Card className="flex-1 rounded-lg m-4 shadow-md flex flex-col">
       <CardHeader>

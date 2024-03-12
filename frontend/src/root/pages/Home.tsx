@@ -4,15 +4,12 @@ import PlayerScreen from "./PlayerScreen";
 import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
 import {
-  EnemyTyping,
-  GameProps,
   GameStatus,
   Player,
   PlayerScore,
 } from "@/types";
 import { Socket } from "socket.io-client";
 import { useToast } from "@/components/ui/use-toast";
-import EnemyTypingParagraph from "../components/EnemyTypingParagraph";
 
 const GamePage = () => {
   const { inviteCode } = useParams();
@@ -22,12 +19,13 @@ const GamePage = () => {
   const [gameStatus, setGameStatus] = useState<GameStatus>("not-started");
   const [paragraph, setParagraph] = useState<string>("");
   const [host, setHost] = useState<string>("");
-  const [inputParagraph, setInputParagraph] = useState<string>("");
+
 
   useEffect(() => {
-    const socket = io(import.meta.env.VITE_WEBSOCKET_URL, {
-      transports: ["websocket"],
-    });
+    const socket =
+      io(import.meta.env.VITE_WEBSOCKET_URL, {
+        transports: ["websocket"],
+      });
 
     const name = Math.random();
 
@@ -41,13 +39,6 @@ const GamePage = () => {
     };
   }, []);
 
-  // useEffect for detecting changes in input paragraph
-  useEffect(() => {
-    if (!ioInstance || gameStatus !== "in-progress") return;
-    console.log(players);
-    ioInstance.emit("player-typed", inputParagraph);
-  }, [inputParagraph]);
-
   useEffect(() => {
     setupListeners();
     return () => removeListeners();
@@ -59,6 +50,7 @@ const GamePage = () => {
     ioInstance.on("connect", () => {
       console.log("Connected to server");
     });
+    
 
     ioInstance.on("players", (players: Player[]) => {
       console.log("recieved players");
@@ -94,7 +86,6 @@ const GamePage = () => {
 
     ioInstance.on("game-finished", () => {
       setGameStatus("finished");
-      setInputParagraph("");
     });
 
     ioInstance.on("new-host", (id: string) => {
@@ -130,6 +121,7 @@ const GamePage = () => {
     <>
       <div className="w-3/4 flex flex-row">
         <PlayerScreen
+          host={host}
           gameId={inviteCode}
           ioInstance={ioInstance}
           gameStatus={gameStatus}

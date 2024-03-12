@@ -53,19 +53,6 @@ export class Game {
       if (this.gameStatus !== "in-progress")
         return socket.emit("error", "The game has not started here.");
 
-      // const splittedParagraph = this.paragraph.split(" ");
-      // const splittedTyped = typed.split(" ");
-
-      // let score = 0;
-
-      // for (let i = 0; i < splittedTyped.length; i++) {
-      //   if (splittedTyped[i] === splittedParagraph[i]) {
-      //     score++;
-      //   } else {
-      //     break;
-      //   }
-      // }
-
       const player = this.players.find((player) => player.id === socket.id);
 
       if (player) {

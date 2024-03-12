@@ -25,15 +25,23 @@ export type PlayerScore = {
 };
 
 export type EnemyTyping = {
-  id: string,
-  letter:string
-}
+  id: string;
+  letter: string;
+};
 
 export type GameStatus = "not-started" | "in-progress" | "finished";
 
 export type GameProps = {
+  host: string;
   gameId: string | undefined;
-  gameStatus:string;
+  gameStatus: string;
+  ioInstance: Socket | undefined;
+  paragraph: string;
+};
+
+export type EnemyGameProps = {
+  gameId: string | undefined;
+  gameStatus: string;
   ioInstance: Socket | undefined;
   paragraph: string;
 };

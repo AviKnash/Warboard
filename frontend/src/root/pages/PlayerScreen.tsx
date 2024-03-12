@@ -6,15 +6,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { GameProps, GameStatus, Player } from "@/types";
-import Cursor from "../components/Cursor";
+import { GameProps} from "@/types";
 import TypingParagraph from "../components/TypingParagraph";
 
 const PlayerScreen = ({
-  gameId,
   ioInstance,
   gameStatus,
   paragraph,
+  host,
 }: GameProps) => {
   function startGame() {
     console.log("here");
@@ -28,7 +27,7 @@ const PlayerScreen = ({
       <CardHeader>
         <CardTitle>Player Screen</CardTitle>
       </CardHeader>
-      {gameStatus === "not-started" ? (
+      {gameStatus === "not-started" && ioInstance?.id === host ? (
         <>
           <CardContent className="flex-grow">
             <p>Create a game where you can invite a friend to battle it out!</p>
