@@ -40,7 +40,7 @@ const PlayerScreen = ({
       ) : (
         <>
           <CardContent className="flex-grow">
-            <TypingParagraph paragraph={paragraph} />
+            <TypingParagraph ioInstance={ioInstance} paragraph={paragraph} />
             {/* <p>
               <Cursor />
               {paragraph}

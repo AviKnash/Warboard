@@ -3,9 +3,16 @@ import EnemyScreen from "./EnemyScreen";
 import PlayerScreen from "./PlayerScreen";
 import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
-import { GameProps, GameStatus, Player, PlayerScore } from "@/types";
+import {
+  EnemyTyping,
+  GameProps,
+  GameStatus,
+  Player,
+  PlayerScore,
+} from "@/types";
 import { Socket } from "socket.io-client";
 import { useToast } from "@/components/ui/use-toast";
+import EnemyTypingParagraph from "../components/EnemyTypingParagraph";
 
 const GamePage = () => {
   const { inviteCode } = useParams();
@@ -33,6 +40,13 @@ const GamePage = () => {
       socket.disconnect();
     };
   }, []);
+
+  // useEffect for detecting changes in input paragraph
+  useEffect(() => {
+    if (!ioInstance || gameStatus !== "in-progress") return;
+    console.log(players);
+    ioInstance.emit("player-typed", inputParagraph);
+  }, [inputParagraph]);
 
   useEffect(() => {
     setupListeners();
@@ -106,12 +120,6 @@ const GamePage = () => {
     ioInstance.off("error");
   }
 
-  function startGame() {
-    if (!ioInstance) return;
-
-    ioInstance.emit("start-game");
-  }
-
   window.onbeforeunload = () => {
     if (ioInstance) {
       ioInstance.emit("leave");
@@ -127,7 +135,12 @@ const GamePage = () => {
           gameStatus={gameStatus}
           paragraph={paragraph}
         />
-        <EnemyScreen />
+        <EnemyScreen
+          gameId={inviteCode}
+          ioInstance={ioInstance}
+          gameStatus={gameStatus}
+          paragraph={paragraph}
+        />
       </div>
     </>
   );

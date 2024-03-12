@@ -5,19 +5,24 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import EnemyTypingParagraph from "../components/EnemyTypingParagraph";
+import { GameProps } from "@/types";
 
-const EnemyScreen = () => {
-  
+const EnemyScreen = ({
+  gameId,
+  ioInstance,
+  gameStatus,
+  paragraph,
+}: GameProps) => {
   return (
     <Card className="flex-1 rounded-lg m-4 shadow-md flex flex-col">
       <CardHeader>
-        <CardTitle>Create a game</CardTitle>
+        <CardTitle>Enemy</CardTitle>
       </CardHeader>
       <CardContent className="flex-grow">
-        <p>Create a game where you can invite a friend to battle it out!</p>
+        <EnemyTypingParagraph paragraph={paragraph} ioInstance={ioInstance} />
       </CardContent>
-      <CardFooter className="flex justify-center mt-auto">
-      </CardFooter>
+      <CardFooter className="flex justify-center mt-auto"></CardFooter>
     </Card>
   );
 };

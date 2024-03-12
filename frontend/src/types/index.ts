@@ -24,11 +24,16 @@ export type PlayerScore = {
   score: number;
 };
 
+export type EnemyTyping = {
+  id: string,
+  letter:string
+}
+
 export type GameStatus = "not-started" | "in-progress" | "finished";
 
 export type GameProps = {
   gameId: string | undefined;
-  gameStatus:string | undefined;
+  gameStatus:string;
   ioInstance: Socket | undefined;
-  paragraph: string | undefined;
+  paragraph: string;
 };

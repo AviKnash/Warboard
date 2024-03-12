@@ -66,6 +66,7 @@
   }
 }
  
+
 @layer base {
   * {
     @apply border-border;
@@ -73,11 +74,17 @@
   body {
     @apply bg-background text-foreground;
   }
+  
 }
+
 
 @layer utilities {
 
-  .cursor {
-    @apply bg-red-700
+  .typed {
+    @apply text-violet-900
+  }
+
+  .current {
+    @apply bg-slate-400
   }
 }

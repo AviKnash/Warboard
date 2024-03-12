@@ -49,70 +49,75 @@ export class Game {
     });
 
     socket.on("player-typed", (typed: string) => {
+      console.log(typed)
       if (this.gameStatus !== "in-progress")
         return socket.emit("error", "The game has not started here.");
 
-      const splittedParagraph = this.paragraph.split(" ");
-      const splittedTyped = typed.split(" ");
+      // const splittedParagraph = this.paragraph.split(" ");
+      // const splittedTyped = typed.split(" ");
 
-      let score = 0;
+      // let score = 0;
 
-      for (let i = 0; i < splittedTyped.length; i++) {
-        if (splittedTyped[i] === splittedParagraph[i]) {
-          score++;
-        } else {
-          break;
-        }
-      }
+      // for (let i = 0; i < splittedTyped.length; i++) {
+      //   if (splittedTyped[i] === splittedParagraph[i]) {
+      //     score++;
+      //   } else {
+      //     break;
+      //   }
+      // }
 
       const player = this.players.find((player) => player.id === socket.id);
 
-      if (player) player.score = score;
+      if (player) {
+        player.score++; // Increase the score for each typed letter
+        this.io
+          .to(this.gameId)
+          .emit("player-score", { id: socket.id, score: player.score });
 
-      this.io.to(this.gameId).emit("player-score", { id: socket.id, score });
-
-      socket.on("leave", () => {
-        if (socket.id === this.gameHost) {
-          this.players = this.players.filter(
-            (player) => player.id !== socket.id
-          );
-
-          if (this.players.length !== 0) {
-            this.gameHost = this.players[0].id;
-            this.io.to(this.gameId).emit("new-host", this.gameHost);
-            this.io.to(this.gameId).emit("player-left", socket.id);
-          } else {
-            rooms.delete(this.gameId);
-          }
+        const otherPlayer = this.players.find((p) => p.id !== socket.id);
+        if (otherPlayer) {
+          socket
+            .to(otherPlayer.id)
+            .emit("typed-letter", { id: socket.id, letter: typed });
         }
-
-        socket.leave(this.gameId);
-        this.players = this.players.filter((player) => player.id !== socket.id);
-        this.io.to(this.gameId).emit("player-left", socket.id);
-      });
-
-      socket.on("disconnect", () => {
-        if (socket.id === this.gameHost) {
-          this.players = this.players.filter(
-            (player) => player.id !== socket.id
-          );
-
-          if (this.players.length !== 0) {
-            this.gameHost = this.players[0].id;
-            this.io.to(this.gameId).emit("new-host", this.gameHost);
-            this.io.to(this.gameId).emit("player-left", socket.id);
-          } else {
-            rooms.delete(this.gameId);
-          }
-        }
-
-        socket.leave(this.gameId);
-        this.players = this.players.filter((player) => player.id !== socket.id);
-        this.io.to(this.gameId).emit("player-left", socket.id);
-      });
+      }
     });
 
-    
+    socket.on("leave", () => {
+      if (socket.id === this.gameHost) {
+        this.players = this.players.filter((player) => player.id !== socket.id);
+
+        if (this.players.length !== 0) {
+          this.gameHost = this.players[0].id;
+          this.io.to(this.gameId).emit("new-host", this.gameHost);
+          this.io.to(this.gameId).emit("player-left", socket.id);
+        } else {
+          rooms.delete(this.gameId);
+        }
+      }
+
+      socket.leave(this.gameId);
+      this.players = this.players.filter((player) => player.id !== socket.id);
+      this.io.to(this.gameId).emit("player-left", socket.id);
+    });
+
+    socket.on("disconnect", () => {
+      if (socket.id === this.gameHost) {
+        this.players = this.players.filter((player) => player.id !== socket.id);
+
+        if (this.players.length !== 0) {
+          this.gameHost = this.players[0].id;
+          this.io.to(this.gameId).emit("new-host", this.gameHost);
+          this.io.to(this.gameId).emit("player-left", socket.id);
+        } else {
+          rooms.delete(this.gameId);
+        }
+      }
+
+      socket.leave(this.gameId);
+      this.players = this.players.filter((player) => player.id !== socket.id);
+      this.io.to(this.gameId).emit("player-left", socket.id);
+    });
   }
 
   joinPlayer(id: string, name: string, socket: Socket) {
