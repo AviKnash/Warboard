@@ -22,9 +22,11 @@ const JoinGame = () => {
     const form = e.currentTarget;
     const formData = new FormData(form);
 
+
     const inviteCode = formData.get("inviteCode") as string;
-    if (!inviteCode) return toast({ title: "Invite code is required" });
-    navigate(`/home/${inviteCode}`);
+    const name = formData.get("name") as string;
+    if (!inviteCode || !name) return toast({ title: "Invite Code and Name are both required" });
+    navigate(`/home/${inviteCode}/${name}`);
   };
 
   return (
@@ -36,8 +38,10 @@ const JoinGame = () => {
         <form onSubmit={joinGame}>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="name">Room Id</Label>
+              <Label htmlFor="code">Room Id</Label>
               <Input type="text" placeholder="eg: 12345" name="inviteCode" />
+              <Label htmlFor="name">Name</Label>
+              <Input type="text" placeholder="Enter name here" name="name" />
             </div>
           </div>
           <CardFooter className=" items-center justify-center py-1.5">

@@ -19,7 +19,7 @@ const App = () => {
 
         {/* private */}
         <Route element={<RootLayout />}>
-          <Route index path="home/:inviteCode" element={<Home />} />
+          <Route index path="home/:inviteCode/:name" element={<Home />} />
           {/* <Route path="/explore" element={<Explore />} /> */}
         </Route>
       </Routes>

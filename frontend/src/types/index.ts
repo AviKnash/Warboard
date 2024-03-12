@@ -32,6 +32,7 @@ export type EnemyTyping = {
 export type GameStatus = "not-started" | "in-progress" | "finished";
 
 export type GameProps = {
+  name: string | undefined;
   host: string;
   gameId: string | undefined;
   gameStatus: string;
@@ -40,6 +41,7 @@ export type GameProps = {
 };
 
 export type EnemyGameProps = {
+  name: string | undefined;
   gameId: string | undefined;
   gameStatus: string;
   ioInstance: Socket | undefined;

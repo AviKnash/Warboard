@@ -3,16 +3,14 @@ import EnemyScreen from "./EnemyScreen";
 import PlayerScreen from "./PlayerScreen";
 import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
-import {
-  GameStatus,
-  Player,
-  PlayerScore,
-} from "@/types";
+import { GameStatus, Player, PlayerScore } from "@/types";
 import { Socket } from "socket.io-client";
 import { useToast } from "@/components/ui/use-toast";
+import WaitingScreen from "./WaitingScreen";
+import { GameFinishedScreen } from "./GameFinishedScreen";
 
 const GamePage = () => {
-  const { inviteCode } = useParams();
+  const { inviteCode, name } = useParams();
   const { toast } = useToast();
   const [ioInstance, setIoInstance] = useState<Socket>();
   const [players, setPlayers] = useState<Player[]>([]);
@@ -20,14 +18,12 @@ const GamePage = () => {
   const [paragraph, setParagraph] = useState<string>("");
   const [host, setHost] = useState<string>("");
 
+  console.log(name);
 
   useEffect(() => {
-    const socket =
-      io(import.meta.env.VITE_WEBSOCKET_URL, {
-        transports: ["websocket"],
-      });
-
-    const name = Math.random();
+    const socket = io(import.meta.env.VITE_WEBSOCKET_URL, {
+      transports: ["websocket"],
+    });
 
     setIoInstance(socket);
 
@@ -50,7 +46,6 @@ const GamePage = () => {
     ioInstance.on("connect", () => {
       console.log("Connected to server");
     });
-    
 
     ioInstance.on("players", (players: Player[]) => {
       console.log("recieved players");
@@ -117,25 +112,56 @@ const GamePage = () => {
     }
   };
   console.log(players);
+  const enemyName =
+    ioInstance?.id === host ? players[1]?.name : players[0]?.name;
+
+  let currentPlayerHasHigherScore;
+
+  if (gameStatus === "finished") {
+    const currentPlayer = players.find((player) => player.name === name);
+    const enemyPlayer = players.find((player) => player.name !== name);
+
+    if (currentPlayer && enemyPlayer) {
+       currentPlayerHasHigherScore =
+        currentPlayer.score > enemyPlayer.score;
+      console.log(currentPlayerHasHigherScore);
+    } else {
+      console.log("Current player or enemy player not found.");
+    }
+  }
+
   return (
     <>
       <div className="w-3/4 flex flex-row">
-        <PlayerScreen
-          host={host}
-          gameId={inviteCode}
-          ioInstance={ioInstance}
-          gameStatus={gameStatus}
-          paragraph={paragraph}
-        />
-        <EnemyScreen
-          gameId={inviteCode}
-          ioInstance={ioInstance}
-          gameStatus={gameStatus}
-          paragraph={paragraph}
-        />
+        {gameStatus === "finished" ? (
+          <GameFinishedScreen currentPlayerHasHigherScore={currentPlayerHasHigherScore} />
+        ) : (
+          players.length === 1 ? (
+            <WaitingScreen gameId={inviteCode} />
+          ) : (
+            <>
+              <PlayerScreen
+                name={name}
+                host={host}
+                gameId={inviteCode}
+                ioInstance={ioInstance}
+                gameStatus={gameStatus}
+                paragraph={paragraph}
+              />
+              <EnemyScreen
+                name={enemyName}
+                gameId={inviteCode}
+                ioInstance={ioInstance}
+                gameStatus={gameStatus}
+                paragraph={paragraph}
+              />
+            </>
+          )
+        )}
       </div>
     </>
   );
+  
 };
 
 export default GamePage;
