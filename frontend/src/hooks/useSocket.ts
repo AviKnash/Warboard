@@ -12,6 +12,7 @@ const useSocket = () => {
   const [gameStatus, setGameStatus] = useState<GameStatus>("not-started");
   const [paragraph, setParagraph] = useState<string>("");
   const [host, setHost] = useState<string>("");
+  const [serverConnected,setServerConnected] = useState<boolean>(false)
 
   useEffect(() => {
     const socket = io(import.meta.env.VITE_WEBSOCKET_URL, {
@@ -38,6 +39,7 @@ const useSocket = () => {
   function setupListeners(socket: Socket) {
     socket.on("connect", () => {
       console.log("Connected to server");
+      setServerConnected(true)
     });
 
     socket.on("players", (players: Player[]) => {
@@ -97,7 +99,7 @@ const useSocket = () => {
     socket.off("error");
   }
 
-  return { players, gameStatus, paragraph, host, ioInstance, name, inviteCode };
+  return { players, gameStatus, paragraph, host, ioInstance, name, inviteCode,serverConnected };
 };
 
 export default useSocket;

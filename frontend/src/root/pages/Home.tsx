@@ -6,8 +6,16 @@ import useSocket from "@/hooks/useSocket";
 import { Loading } from "@/auth/components/Loading";
 
 const GamePage = () => {
-  const { players, gameStatus, paragraph, host, ioInstance, name, inviteCode } =
-    useSocket();
+  const {
+    players,
+    gameStatus,
+    paragraph,
+    host,
+    ioInstance,
+    name,
+    inviteCode,
+    serverConnected,
+  } = useSocket();
 
   const enemyName =
     ioInstance?.id === host ? players[1]?.name : players[0]?.name;
@@ -29,7 +37,7 @@ const GamePage = () => {
   return (
     <>
       <div className="w-3/4 flex flex-row">
-        {!ioInstance ? (
+        {!serverConnected ? (
           <Loading />
         ) : gameStatus === "finished" ? (
           <GameFinishedScreen
