@@ -15,7 +15,9 @@ const GamePage = () => {
     name,
     inviteCode,
     serverConnected,
+    wpm,
   } = useSocket();
+  console.log(wpm);
 
   const enemyName =
     ioInstance?.id === host ? players[1]?.name : players[0]?.name;

@@ -12,7 +12,8 @@ const useSocket = () => {
   const [gameStatus, setGameStatus] = useState<GameStatus>("not-started");
   const [paragraph, setParagraph] = useState<string>("");
   const [host, setHost] = useState<string>("");
-  const [serverConnected,setServerConnected] = useState<boolean>(false)
+  const [serverConnected, setServerConnected] = useState<boolean>(false);
+  const [wpm, setWpm] = useState<number>(0);
 
   useEffect(() => {
     const socket = io(import.meta.env.VITE_WEBSOCKET_URL, {
@@ -39,7 +40,7 @@ const useSocket = () => {
   function setupListeners(socket: Socket) {
     socket.on("connect", () => {
       console.log("Connected to server");
-      setServerConnected(true)
+      setServerConnected(true);
     });
 
     socket.on("players", (players: Player[]) => {
@@ -55,7 +56,8 @@ const useSocket = () => {
       setPlayers((prev) => prev.filter((player) => player.id !== id));
     });
 
-    socket.on("player-score", ({ id, score }: PlayerScore) => {
+    socket.on("player-score", ({ id, score, wpm }: PlayerScore) => {
+      setWpm(wpm);
       setPlayers((prev) =>
         prev.map((player) => {
           if (player.id === id) {
@@ -99,7 +101,17 @@ const useSocket = () => {
     socket.off("error");
   }
 
-  return { players, gameStatus, paragraph, host, ioInstance, name, inviteCode,serverConnected };
+  return {
+    players,
+    gameStatus,
+    paragraph,
+    host,
+    ioInstance,
+    name,
+    inviteCode,
+    serverConnected,
+    wpm,
+  };
 };
 
 export default useSocket;

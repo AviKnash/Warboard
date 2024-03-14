@@ -1,6 +1,7 @@
 import { Server, Socket } from "socket.io";
 import { generateParagraph } from "../utils/generateParagraph";
 import { rooms } from "../listeners";
+import { calculateWPM } from "../utils/calculateWPM";
 
 export class Game {
   gameStatus: "not-started" | "in-progress" | "finished";
@@ -49,17 +50,19 @@ export class Game {
     });
 
     socket.on("player-typed", (typed: string) => {
-      console.log(typed)
+      console.log(typed);
       if (this.gameStatus !== "in-progress")
         return socket.emit("error", "The game has not started here.");
 
       const player = this.players.find((player) => player.id === socket.id);
 
       if (player) {
+        const paragraphLength = this.paragraph.length;
         player.score++; // Increase the score for each typed letter
+        const wpm = calculateWPM(player.score);
         this.io
           .to(this.gameId)
-          .emit("player-score", { id: socket.id, score: player.score });
+          .emit("player-score", { id: socket.id, score: player.score, wpm });
 
         const otherPlayer = this.players.find((p) => p.id !== socket.id);
         if (otherPlayer) {

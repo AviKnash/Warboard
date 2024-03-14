@@ -1,6 +1,6 @@
 import CreateGame from "../CreateGame";
 import JoinGame from "../JoinGame";
-import logo from "../../../public/warboard.png";
+import logo from "/warboard.png";
 
 const StartGame = () => {
   return (

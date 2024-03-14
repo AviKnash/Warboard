@@ -22,6 +22,7 @@ export type Player = {
 export type PlayerScore = {
   id: string;
   score: number;
+  wpm: number;
 };
 
 export type EnemyTyping = {

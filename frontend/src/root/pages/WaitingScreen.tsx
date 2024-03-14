@@ -1,23 +1,29 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 
 type WaitingScreenProps = {
   gameId: string | undefined;
 };
 
 const WaitingScreen = ({ gameId }: WaitingScreenProps) => {
+  const copyGameId = () => {
+    if (!gameId) return;
+    navigator.clipboard.writeText(gameId);
+  };
+
   return (
     <Card className="flex-1 rounded-lg m-4 shadow-md flex flex-col">
       <CardHeader>
         <CardTitle>Waiting for player 2...</CardTitle>
       </CardHeader>
-
-      <CardContent className="flex-grow">
-        Please share the code : {gameId} to invite another player.
+      <CardContent>
+        Please copy the code to share with a friend.
+      </CardContent>
+    
+      <CardContent className="flex-grow flex flex-row">
+        <Input type="text" readOnly value={gameId} />
+        <Button onClick={copyGameId}>Copy</Button>
       </CardContent>
     </Card>
   );
