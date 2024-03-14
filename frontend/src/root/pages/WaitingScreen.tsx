@@ -13,7 +13,7 @@ const WaitingScreen = ({ gameId }: WaitingScreenProps) => {
   return (
     <Card className="flex-1 rounded-lg m-4 shadow-md flex flex-col">
       <CardHeader>
-        <CardTitle>Waiting for another player</CardTitle>
+        <CardTitle>Waiting for player 2...</CardTitle>
       </CardHeader>
 
       <CardContent className="flex-grow">

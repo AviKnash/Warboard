@@ -10,7 +10,7 @@ const AuthLayout = () => {
         <Navigate to="/home/:invite-code" />
       ) : (
         <>
-          <section className="flex flex-1 justify-center items-center flex-col py-10 border-4 border-white h-full">
+          <section className="flex flex-1 justify-center items-center flex-col py-10 h-full">
             <Outlet />
           </section>
         </>
