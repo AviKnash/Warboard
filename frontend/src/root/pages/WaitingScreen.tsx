@@ -13,17 +13,17 @@ const WaitingScreen = ({ gameId }: WaitingScreenProps) => {
   };
 
   return (
-    <Card className="flex-1 rounded-lg m-4 shadow-md flex flex-col">
+    <Card className="flex-1 rounded-lg m-4 shadow-md flex flex-col items-center">
       <CardHeader>
         <CardTitle>Waiting for player 2...</CardTitle>
       </CardHeader>
       <CardContent>
         Please copy the code to share with a friend.
       </CardContent>
-    
-      <CardContent className="flex-grow flex flex-row">
+
+      <CardContent className="flex-grow flex flex-row w-1/2 justify-center">
         <Input type="text" readOnly value={gameId} />
-        <Button onClick={copyGameId}>Copy</Button>
+        <Button variant="ghost" onClick={copyGameId}>Copy</Button>
       </CardContent>
     </Card>
   );

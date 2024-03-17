@@ -9,6 +9,19 @@ export type IContextType = {
   checkAuthUser: () => Promise<boolean>;
 };
 
+export type ISocketContext = {
+  name: string | undefined;
+  ioInstance: Socket | undefined;
+  inviteCode: string | undefined;
+  removeListeners:(socket: Socket)=>void
+};
+
+export type IGameContext = {
+  popOver: boolean;
+  counter: number;
+  setPopOver: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
 export type IUser = {
   name: string;
 };
@@ -39,6 +52,8 @@ export type GameProps = {
   gameStatus: string;
   ioInstance: Socket | undefined;
   paragraph: string;
+  setPopOver:React.Dispatch<React.SetStateAction<boolean>>
+  setTimeLeft:React.Dispatch<React.SetStateAction<number | null>>
 };
 
 export type EnemyGameProps = {

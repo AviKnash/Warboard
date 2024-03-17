@@ -4,6 +4,8 @@ import WaitingScreen from "./WaitingScreen";
 import { GameFinishedScreen } from "./GameFinishedScreen";
 import useSocket from "@/hooks/useSocket";
 import { Loading } from "@/auth/components/Loading";
+import CountDown from "../components/CountDown";
+import { useEffect, useState } from "react";
 
 const GamePage = () => {
   const {
@@ -17,7 +19,22 @@ const GamePage = () => {
     serverConnected,
     wpm,
   } = useSocket();
-  console.log(wpm);
+
+  const [popOver, setPopOver] = useState<boolean>(false);
+  const [timeLeft, setTimeLeft] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (timeLeft === 0) {
+      console.log("TIME LEFT IS 0");
+      setTimeLeft(null);
+    }
+    if (!timeLeft) return;
+    const intervalId = setInterval(() => {
+      setTimeLeft(timeLeft - 1);
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [timeLeft]);
 
   const enemyName =
     ioInstance?.id === host ? players[1]?.name : players[0]?.name;
@@ -49,13 +66,16 @@ const GamePage = () => {
           <WaitingScreen gameId={inviteCode} />
         ) : (
           <>
+            {popOver && <CountDown count={timeLeft} />}
             <PlayerScreen
+              setPopOver={setPopOver}
               name={name}
               host={host}
               gameId={inviteCode}
               ioInstance={ioInstance}
               gameStatus={gameStatus}
               paragraph={paragraph}
+              setTimeLeft={setTimeLeft}
             />
             <EnemyScreen
               name={enemyName}

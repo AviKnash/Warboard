@@ -58,7 +58,7 @@ export class Game {
 
       if (player) {
         const paragraphLength = this.paragraph.length;
-        player.score++; // Increase the score for each typed letter
+        player.score++; 
         const wpm = calculateWPM(player.score);
         this.io
           .to(this.gameId)

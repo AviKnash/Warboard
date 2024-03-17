@@ -1,12 +1,15 @@
+import { Link } from "react-router-dom";
+import { AvatarDemo } from "./UserIcon";
+
 const TopBar = () => {
     return (
       <div className="flex border bg-card text-card-foreground shadow-sm h-12 justify-center">
-        <div className="container mx-auto flex justify-between items-center">
-          <div className="text-xl font-bold">Your Game Title</div>
+        <div className="container flex justify-between items-center">
+          <div className="flex flex-row w-3/4 h-12 items-center"><img className="h-10" draggable={false} src="/warboard.png"/></div>
+          {/* <div className="flex flex-row w-3/4 h-12 items-center"><AvatarDemo /></div> */}
           <div className="flex space-x-4">
-            <a href="#" className="hover:text-gray-300">Home</a>
-            <a href="#" className="hover:text-gray-300">About</a>
-            <a href="#" className="hover:text-gray-300">Contact</a>
+            <Link to="#" className="hover:text-gray-300">Leaderboard</Link>
+            <Link to="#" className="hover:text-gray-300"><AvatarDemo /></Link>
           </div>
         </div>
       </div>

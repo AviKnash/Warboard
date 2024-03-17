@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { createContext, useContext, useEffect, useState } from "react";
-
+import { auth } from "@/firebase/firebase";
 import { IContextType, IUser } from "@/types";
+import { onAuthStateChanged } from "firebase/auth";
 
 export const INITIAL_USER = {
   name: "",
@@ -21,6 +22,8 @@ const AuthContext = createContext<IContextType>(INITIAL_STATE);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
   const [user, setUser] = useState<IUser>(INITIAL_USER);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -49,6 +52,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, initializeUser);
+    return unsubscribe;
+  }, []);
+
+  const initializeUser = async (user) => {
+    if (user) {
+      setCurrentUser({ ...user });
+      setUserLoggedIn(true);
+    } else {
+      setCurrentUser(null);
+      setUserLoggedIn(false);
+    }
+
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
     const cookieFallback = localStorage.getItem("cookieFallback");
     if (cookieFallback === "[]" || cookieFallback === null) {
       navigate("/start-game");
@@ -59,6 +79,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const value = {
     user,
+    currentUser,
     setUser,
     isLoading,
     isAuthenticated,

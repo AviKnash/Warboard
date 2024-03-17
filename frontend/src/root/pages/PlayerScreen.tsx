@@ -8,6 +8,8 @@ import {
 } from "@/components/ui/card";
 import { GameProps } from "@/types";
 import TypingParagraph from "../components/TypingParagraph";
+import { useGameContext } from "@/context/GameContext";
+import { useState } from "react";
 
 const PlayerScreen = ({
   name,
@@ -15,12 +17,25 @@ const PlayerScreen = ({
   gameStatus,
   paragraph,
   host,
+  setPopOver,
+  setTimeLeft
 }: GameProps) => {
+  // const { setPopOver } = useGameContext();
+  console.log(gameStatus);
+
+  // const [popOver, setPopOver] = useState<boolean>(false);
+
+
   function startGame() {
     console.log("here");
     if (!ioInstance) return;
-
-    ioInstance.emit("start-game");
+    setPopOver(true);
+    setTimeLeft(6)
+    setTimeout(() => {
+      console.log("Inside timeout");
+      ioInstance.emit("start-game");
+      setPopOver(false);
+    }, 5000);
   }
 
   return (
