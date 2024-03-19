@@ -1,67 +1,53 @@
 import { useNavigate } from "react-router-dom";
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "@/firebase/firebase";
-import { IContextType, IUser } from "@/types";
+import { IContextType } from "@/types";
 import { onAuthStateChanged } from "firebase/auth";
 
-export const INITIAL_USER = {
-  name: "",
+const INITIAL_STATE = {
+  currentUser: null,
+  isLoading: false,
+  userLoggedIn: false,
+  setCurrentUser: () => {},
+  setUserLoggedIn: () => {},
 };
 
-const INITIAL_STATE = {
-  user: INITIAL_USER,
-  isLoading: false,
-  isAuthenticated: false,
-  setUser: () => {},
-  setIsAuthenticated: () => {},
-  checkAuthUser: async () => false as boolean,
-};
+type IUser =
+  | {
+      displayName: string;
+      photoURL: string;
+      userID:string
+    }
+  | undefined;
 
 const AuthContext = createContext<IContextType>(INITIAL_STATE);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
-  const [user, setUser] = useState<IUser>(INITIAL_USER);
-  const [currentUser, setCurrentUser] = useState(null);
-  const [userLoggedIn, setUserLoggedIn] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const checkAuthUser = async () => {
-    setIsLoading(true);
-    try {
-      const currentAccount = {
-        name: "Avinash",
-      };
-      if (currentAccount) {
-        setUser({
-          name: currentAccount.name,
-        });
-        setIsAuthenticated(true);
-
-        return true;
-      }
-
-      return false;
-    } catch (error) {
-      console.error(error);
-      return false;
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const [currentUser, setCurrentUser] = useState<IUser>({
+    displayName: "",
+    photoURL: "",
+    userID:""
+  });
+  const [userLoggedIn, setUserLoggedIn] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, initializeUser);
     return unsubscribe;
   }, []);
 
-  const initializeUser = async (user) => {
+  const initializeUser = async (user: any) => {
+    setIsLoading(true);
     if (user) {
-      setCurrentUser({ ...user });
+      setCurrentUser({
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+        userID:user.uid
+      });
       setUserLoggedIn(true);
     } else {
-      setCurrentUser(null);
+      setCurrentUser(undefined);
       setUserLoggedIn(false);
     }
 
@@ -73,18 +59,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (cookieFallback === "[]" || cookieFallback === null) {
       navigate("/start-game");
     }
-
-    checkAuthUser();
   }, []);
 
   const value = {
-    user,
     currentUser,
-    setUser,
+    setCurrentUser,
+    userLoggedIn,
+    setUserLoggedIn,
     isLoading,
-    isAuthenticated,
-    setIsAuthenticated,
-    checkAuthUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

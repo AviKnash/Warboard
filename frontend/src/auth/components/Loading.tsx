@@ -9,7 +9,7 @@ export function Loading() {
   return (
     <Card className="flex-1 rounded-lg m-4 shadow-md flex flex-col">
       <CardHeader>
-        <CardTitle>Conenction is initializing..</CardTitle>
+        <CardTitle>Connection is initializing..</CardTitle>
       </CardHeader>
 
       <CardContent className="flex-grow">

@@ -3,6 +3,7 @@ import { io, Socket } from "socket.io-client";
 import { useParams } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 import { Player, PlayerScore, GameStatus } from "@/types";
+import { useUserContext } from "@/context/AuthContext";
 
 const useSocket = () => {
   const { inviteCode, name } = useParams();
@@ -13,7 +14,9 @@ const useSocket = () => {
   const [paragraph, setParagraph] = useState<string>("");
   const [host, setHost] = useState<string>("");
   const [serverConnected, setServerConnected] = useState<boolean>(false);
-  const [wpm, setWpm] = useState<number>(0);
+  const { currentUser } = useUserContext();
+
+  const userName = currentUser ? currentUser.displayName : name;
 
   useEffect(() => {
     const socket = io(import.meta.env.VITE_WEBSOCKET_URL, {
@@ -22,7 +25,7 @@ const useSocket = () => {
 
     setIoInstance(socket);
 
-    socket.emit("join-game", inviteCode, name);
+    socket.emit("join-game", inviteCode, userName);
 
     return () => {
       removeListeners(socket);
@@ -57,13 +60,13 @@ const useSocket = () => {
     });
 
     socket.on("player-score", ({ id, score, wpm }: PlayerScore) => {
-      setWpm(wpm);
       setPlayers((prev) =>
         prev.map((player) => {
           if (player.id === id) {
             return {
               ...player,
               score,
+              wpm,
             };
           }
           return player;
@@ -101,16 +104,19 @@ const useSocket = () => {
     socket.off("error");
   }
 
+  const currentPlayer = players.find((player)=>player.id === ioInstance?.id)
+  const enemyPlayer = players.find((player)=>player.id !== ioInstance?.id)
+
   return {
     players,
     gameStatus,
     paragraph,
     host,
     ioInstance,
-    name,
     inviteCode,
     serverConnected,
-    wpm,
+    currentPlayer,
+    enemyPlayer
   };
 };
 

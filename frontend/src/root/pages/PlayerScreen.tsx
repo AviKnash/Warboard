@@ -9,7 +9,6 @@ import {
 import { GameProps } from "@/types";
 import TypingParagraph from "../components/TypingParagraph";
 import { useGameContext } from "@/context/GameContext";
-import { useState } from "react";
 
 const PlayerScreen = ({
   name,
@@ -17,11 +16,11 @@ const PlayerScreen = ({
   gameStatus,
   paragraph,
   host,
-  setPopOver,
-  setTimeLeft
 }: GameProps) => {
   // const { setPopOver } = useGameContext();
   console.log(gameStatus);
+
+  const {setPopOver,setTimeLeft} = useGameContext()
 
   // const [popOver, setPopOver] = useState<boolean>(false);
 

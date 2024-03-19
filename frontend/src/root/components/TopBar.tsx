@@ -2,6 +2,9 @@ import { Link } from "react-router-dom";
 import { AvatarDemo } from "./UserIcon";
 
 const TopBar = () => {
+
+ 
+
     return (
       <div className="flex border bg-card text-card-foreground shadow-sm h-12 justify-center">
         <div className="container flex justify-between items-center">

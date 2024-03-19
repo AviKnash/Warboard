@@ -1,25 +1,25 @@
 import { Socket } from "socket.io-client";
 
 export type IContextType = {
-  user: IUser;
+  currentUser: any;
   isLoading: boolean;
-  setUser: React.Dispatch<React.SetStateAction<IUser>>;
-  isAuthenticated: boolean;
-  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
-  checkAuthUser: () => Promise<boolean>;
+  setCurrentUser: React.Dispatch<React.SetStateAction<any>>;
+  userLoggedIn: boolean;
+  setUserLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export type ISocketContext = {
   name: string | undefined;
   ioInstance: Socket | undefined;
   inviteCode: string | undefined;
-  removeListeners:(socket: Socket)=>void
+  removeListeners: (socket: Socket) => void;
 };
 
 export type IGameContext = {
   popOver: boolean;
-  counter: number;
+  timeLeft: number | null;
   setPopOver: React.Dispatch<React.SetStateAction<boolean>>;
+  setTimeLeft: React.Dispatch<React.SetStateAction<any>>
 };
 
 export type IUser = {
@@ -30,6 +30,7 @@ export type Player = {
   id: string;
   name: string;
   score: number;
+  wpm: number;
 };
 
 export type PlayerScore = {
@@ -52,8 +53,8 @@ export type GameProps = {
   gameStatus: string;
   ioInstance: Socket | undefined;
   paragraph: string;
-  setPopOver:React.Dispatch<React.SetStateAction<boolean>>
-  setTimeLeft:React.Dispatch<React.SetStateAction<number | null>>
+  // setPopOver: React.Dispatch<React.SetStateAction<boolean>>;
+  // setTimeLeft: React.Dispatch<React.SetStateAction<number | null>>;
 };
 
 export type EnemyGameProps = {

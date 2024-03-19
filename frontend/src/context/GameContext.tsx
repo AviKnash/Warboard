@@ -1,38 +1,42 @@
 
-import useSocket from "@/hooks/useSocket";
 import { IGameContext } from "@/types";
 import { createContext, useContext, useEffect, useState } from "react";
 
 const INITIAL_STATE = {
   popOver: false,
-  counter: 5,
+  timeLeft: 0,
   setPopOver: () => {},
+  setTimeLeft:()=>{}
 };
 
 const GameContext = createContext<IGameContext>(INITIAL_STATE);
 
 export function GameProvider({ children }: { children: React.ReactNode }) {
   const [popOver, setPopOver] = useState<boolean>(false);
-  const [counter, setCounter] = useState(5);
+  const [timeLeft, setTimeLeft] = useState<number | null>(null);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (counter > 0) {
-      timer = setTimeout(() => {
-        setCounter(prevCounter => prevCounter - 1);
-      }, 1000);
+    if (timeLeft === 0) {
+      console.log("TIME LEFT IS 0");
+      setTimeLeft(null);
     }
-    return () => clearTimeout(timer);
-  }, [counter,popOver]);
-  
+    if (!timeLeft) return;
+    const intervalId = setInterval(() => {
+      setTimeLeft(timeLeft - 1);
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [timeLeft]);
+
+  console.log(timeLeft)
 
   const value = {
     popOver,
-    counter,
+    timeLeft,
     setPopOver,
+    setTimeLeft
   };
 
-  console.log(counter)
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
 }

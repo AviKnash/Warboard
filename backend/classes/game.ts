@@ -6,7 +6,7 @@ import { calculateWPM } from "../utils/calculateWPM";
 export class Game {
   gameStatus: "not-started" | "in-progress" | "finished";
   gameId: string;
-  players: { id: string; score: number; name: string }[];
+  players: { id: string; score: number; name: string; wpm: number }[];
   io: Server;
   gameHost: string;
   paragraph: string;
@@ -58,11 +58,16 @@ export class Game {
 
       if (player) {
         const paragraphLength = this.paragraph.length;
-        player.score++; 
+        player.score++;
         const wpm = calculateWPM(player.score);
+        player.wpm = wpm;
         this.io
           .to(this.gameId)
-          .emit("player-score", { id: socket.id, score: player.score, wpm });
+          .emit("player-score", {
+            id: socket.id,
+            score: player.score,
+            wpm: player.wpm,
+          });
 
         const otherPlayer = this.players.find((p) => p.id !== socket.id);
         if (otherPlayer) {
@@ -118,11 +123,12 @@ export class Game {
       );
     }
 
-    this.players.push({ id, name, score: 0 });
+    this.players.push({ id, name, score: 0, wpm: 0 });
     this.io.to(this.gameId).emit("player-joined", {
       id,
       name,
       score: 0,
+      wpm: 0,
     });
 
     socket.emit("players", this.players);

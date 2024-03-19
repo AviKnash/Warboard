@@ -11,8 +11,6 @@ type SocketContextType = {
   paragraph: string;
   host: string;
   serverConnected: boolean;
-  wpm: number;
-  name: string | undefined;
   inviteCode: string | undefined;
 };
 
@@ -23,8 +21,6 @@ const SocketContext = createContext<SocketContextType>({
   paragraph: "",
   host: "",
   serverConnected: false,
-  wpm: 0,
-  name: "",
   inviteCode: "",
 });
 
@@ -35,10 +31,8 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
         paragraph,
         host,
         ioInstance,
-        name,
         inviteCode,
         serverConnected,
-        wpm,
       } = useSocket();
     
   return (
@@ -49,10 +43,8 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
         paragraph,
         host,
         ioInstance,
-        name,
         inviteCode,
         serverConnected,
-        wpm,
       }}
     >
       {children}

@@ -1,4 +1,3 @@
-import React from 'react';
 
 const CountDown = ({ count }: { count: number | null }) => {
   return (

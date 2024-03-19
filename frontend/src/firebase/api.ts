@@ -1,11 +1,9 @@
 import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
-  sendEmailVerification,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
-  updatePassword,
 } from "firebase/auth";
 import { auth } from "./firebase";
 
