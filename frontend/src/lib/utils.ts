@@ -1,8 +1,8 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
-import pikachu from "../../public/pikachu-icon.png"
-import greek from "../../public/greek-icon.png"
-import puzzle from "../../public/puzzle-icon.png"
+import pikachu from "/pikachu-icon.png"
+import greek from "/greek-icon.png"
+import puzzle from "/puzzle-icon.png"
 
 
 export function cn(...inputs: ClassValue[]) {
@@ -28,24 +28,7 @@ export const userComments = [
     description: " Learn and use proper typing technique, such as keeping your fingers on the home row keys and using the correct fingers for each key.",
     imageUrl: puzzle
   },
-  // {
-  //   name: "David Johnson",
-  //   title: "Keyboard Ninja",
-  //   description: "Learn proper finger placement and keyboard shortcuts to increase efficiency. Take regular breaks to avoid fatigue and maintain focus.",
-  //   imageUrl: ""
-  // },
-  // {
-  //   name: "Sophia Rodriguez",
-  //   title: "Swift Typist",
-  //   description: "Utilize typing tutors and exercises to strengthen your typing skills. Experiment with different typing techniques and find what works best for you.",
-  //   imageUrl: ""
-  // },
-  // {
-  //   name: "Peter Canter",
-  //   title: "Swift Typist",
-  //   description: "Utilize typing tutors and exercises to strengthen your typing skills. Experiment with different typing techniques and find what works best for you.",
-  //   imageUrl: ""
-  // }
+
 ];
 
 

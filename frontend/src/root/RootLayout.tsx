@@ -5,7 +5,7 @@ const RootLayout = () => {
   return (
     <>
         <TopBar />
-      <section className="flex flex-1 justify-center items-center flex-col py-10">
+      <section className="flex flex-1 justify-center items-center flex-col" style={{ height: `calc(100vh - 7vh)` }}>
 
         <Outlet />
       </section>

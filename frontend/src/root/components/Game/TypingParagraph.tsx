@@ -11,6 +11,12 @@ const TypingParagraph: React.FC<TypingParagraphProps> = ({
   ioInstance,
 }) => {
   const [currentPosition, setCurrentPosition] = useState(0);
+  const [isCurrentVisible, setIsCurrentVisible] = useState(true);
+  
+
+  const toggleCurrentVisibility = () => {
+    setIsCurrentVisible((prev) => !prev);
+  };
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.key === paragraph[currentPosition]) {
@@ -23,9 +29,11 @@ const TypingParagraph: React.FC<TypingParagraphProps> = ({
 
   useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
+    const interval = setInterval(toggleCurrentVisibility, 500);
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
+      clearInterval(interval);
     };
   }, [currentPosition, paragraph]);
 
@@ -37,7 +45,7 @@ const TypingParagraph: React.FC<TypingParagraphProps> = ({
 
     if (isTyped) {
       className = "typed";
-    } else if (isCurrent) {
+    } else if (isCurrent && isCurrentVisible) {
       className = "current";
     }
 

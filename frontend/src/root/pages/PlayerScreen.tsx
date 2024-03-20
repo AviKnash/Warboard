@@ -1,13 +1,10 @@
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import { GameProps } from "@/types";
-import TypingParagraph from "../components/TypingParagraph";
+import TypingParagraph from "../components/Game/TypingParagraph";
+import spartan from "/helmet.png";
 
 const PlayerScreen = ({
   name,
@@ -15,40 +12,23 @@ const PlayerScreen = ({
   gameStatus,
   paragraph,
   host,
-  setTimeLeft,
 }: GameProps) => {
-
-  function startGame() {
-    if (!ioInstance) return;
-    setTimeLeft(5)
-    setTimeout(() => {
-      ioInstance.emit("start-game");
-    }, 5000);
-  }
-
-  
-
   return (
-    <Card className="flex-1 rounded-lg m-4 shadow-md flex flex-col">
-      <CardHeader>
-        <CardTitle>{name}</CardTitle>
-      </CardHeader>
+    <Card
+      className="flex-1 rounded-lg m-4 shadow-md flex items-center justify-center"
+      style={{ backgroundImage: `url(${spartan})`, backgroundSize: "cover" }}
+    >
       {gameStatus === "not-started" ? (
         <>
           {ioInstance?.id === host ? (
             <>
               <CardContent className="flex-grow">
-                <p>
-                  Create a game where you can invite a friend to battle it out!
-                </p>
+                <h1 className="text-6xl">{name}</h1>
               </CardContent>
-              <CardFooter className="flex justify-center mt-auto">
-                <Button onClick={startGame}>Start Game</Button>
-              </CardFooter>
             </>
           ) : (
             <CardContent className="flex-grow">
-              <p>Waiting for the host to start the game...</p>
+              <h1 className="text-6xl">{name}</h1>
             </CardContent>
           )}
         </>

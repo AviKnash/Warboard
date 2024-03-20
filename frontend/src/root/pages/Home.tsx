@@ -4,9 +4,10 @@ import WaitingScreen from "./WaitingScreen";
 import { GameFinishedScreen } from "./GameFinishedScreen";
 import useSocket from "@/hooks/useSocket";
 import { Loading } from "@/auth/components/Loading";
-import CountDown from "../components/CountDown";
+import CountDown from "../components/Game/CountDown";
 import { useUserContext } from "@/context/AuthContext";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 const GamePage = () => {
   const {
@@ -25,6 +26,8 @@ const GamePage = () => {
 
   const { userLoggedIn } = useUserContext();
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
+  const currentPlayerHasHigherScore =
+    currentPlayer && enemyPlayer && currentPlayer?.score > enemyPlayer?.score;
 
   useEffect(() => {
     if (timer === 0 && timeLeft === 0) {
@@ -41,12 +44,17 @@ const GamePage = () => {
     return () => clearInterval(intervalId);
   }, [timeLeft]);
 
-  const currentPlayerHasHigherScore =
-    currentPlayer && enemyPlayer && currentPlayer?.score > enemyPlayer?.score;
+  function startGame() {
+    if (!ioInstance) return;
+    setTimeLeft(5);
+    setTimeout(() => {
+      ioInstance.emit("start-game");
+    }, 5000);
+  }
 
   return (
     <>
-      <div className="w-3/4 flex flex-row">
+      <div className="w-3/4 flex flex-row h-2/3">
         {!serverConnected ? (
           <Loading />
         ) : gameStatus === "finished" ? (
@@ -60,22 +68,70 @@ const GamePage = () => {
         ) : (
           <>
             {popScreen && <CountDown count={timer} />}
-            <PlayerScreen
-              name={currentPlayer?.name}
-              host={host}
-              gameId={inviteCode}
-              ioInstance={ioInstance}
-              gameStatus={gameStatus}
-              paragraph={paragraph}
-              setTimeLeft={setTimeLeft}
-            />
-            <EnemyScreen
-              name={enemyPlayer?.name}
-              gameId={inviteCode}
-              ioInstance={ioInstance}
-              gameStatus={gameStatus}
-              paragraph={paragraph}
-            />
+            {gameStatus === "in-progress" ? (
+              <>
+                <PlayerScreen
+                  name={currentPlayer?.name}
+                  host={host}
+                  gameId={inviteCode}
+                  ioInstance={ioInstance}
+                  gameStatus={gameStatus}
+                  paragraph={paragraph}
+                  setTimeLeft={setTimeLeft}
+                />
+                <EnemyScreen
+                  name={enemyPlayer?.name}
+                  gameId={inviteCode}
+                  ioInstance={ioInstance}
+                  gameStatus={gameStatus}
+                  paragraph={paragraph}
+                />
+              </>
+            ) : (
+              <div className="flex flex-col w-full">
+                <div className="h-1/6 flex items-center justify-center">
+                  {ioInstance?.id === host ? (
+                    <>
+                      <h1 className="text-center text-2xl items-center">
+                        Ready to battle?
+                      </h1>
+                      <Button
+                        onClick={startGame}
+                        variant="link"
+                        className="text-2xl underline"
+                      >
+                        Start
+                      </Button>
+                    </>
+                  ) : (
+                    <h1 className="text-center text-2xl items-center">
+                      Waiting for host to start battle. Hold on!
+                    </h1>
+                  )}
+                </div>
+                <div className="w-full flex h-5/6">
+                  <PlayerScreen
+                    name={currentPlayer?.name}
+                    host={host}
+                    gameId={inviteCode}
+                    ioInstance={ioInstance}
+                    gameStatus={gameStatus}
+                    paragraph={paragraph}
+                    setTimeLeft={setTimeLeft}
+                  />
+                  <div className="flex items-center justify-center text-white text-6xl font-semibold italic">
+                    <h1>VS</h1>
+                  </div>
+                  <EnemyScreen
+                    name={enemyPlayer?.name}
+                    gameId={inviteCode}
+                    ioInstance={ioInstance}
+                    gameStatus={gameStatus}
+                    paragraph={paragraph}
+                  />
+                </div>
+              </div>
+            )}
           </>
         )}
       </div>
