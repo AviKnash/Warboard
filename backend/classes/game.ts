@@ -30,6 +30,7 @@ export class Game {
         return socket.emit("error", "You are not the host of the game.");
       }
 
+
       for (const player of this.players) {
         player.score = 0;
       }
@@ -48,6 +49,13 @@ export class Game {
         this.io.to(this.gameId).emit("players", this.players);
       }, 60000);
     });
+
+    socket.on("start-timer",(timer:number)=>{
+      console.log("start timer is",timer)
+
+        this.io.to(this.gameId).emit("time-left",timer,true)
+
+    })
 
     socket.on("player-typed", (typed: string) => {
       console.log(typed);
