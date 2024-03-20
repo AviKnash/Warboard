@@ -24,7 +24,7 @@ const StartGame = () => {
             </div>
           )}
           <div
-            className={`w-full grid grid-cols-1 py-20 sm:grid-cols-2 lg:grid-cols-${
+            className={`w-full grid grid-cols-1 py-5 sm:grid-cols-2 lg:grid-cols-${
               userLoggedIn ? "2" : "3"
             }`}
           >
