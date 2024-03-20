@@ -5,6 +5,7 @@ import Home from "./root/pages/Home";
 import AuthLayout from "./auth/AuthLayout";
 import StartGame from "./auth/components/StartGame";
 import { Toaster } from "./components/ui/toaster";
+import LeaderBoard from "./root/pages/LeaderBoard";
 // import { AllUsers, CreatePost, EditPost, Explore, Home, PostDetails, Profile, Saved, UpdateProfile } from "./root/pages";
 // import { Toaster } from "@/components/ui/toaster";
 
@@ -20,7 +21,7 @@ const App = () => {
         {/* private */}
         <Route element={<RootLayout />}>
           <Route index path="home/:inviteCode/:name" element={<Home />} />
-          {/* <Route path="/explore" element={<Explore />} /> */}
+          <Route path="/leaderboard" element={<LeaderBoard />} />
         </Route>
       </Routes>
       <Toaster />

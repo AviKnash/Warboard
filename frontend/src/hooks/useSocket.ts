@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { useParams } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
@@ -9,14 +9,23 @@ const useSocket = () => {
   const { inviteCode, name } = useParams();
   const { toast } = useToast();
   const [ioInstance, setIoInstance] = useState<Socket>();
+  const paramsRef = useRef({ inviteCode, name });
   const [players, setPlayers] = useState<Player[]>([]);
   const [gameStatus, setGameStatus] = useState<GameStatus>("not-started");
   const [paragraph, setParagraph] = useState<string>("");
   const [host, setHost] = useState<string>("");
   const [serverConnected, setServerConnected] = useState<boolean>(false);
   const { currentUser } = useUserContext();
+  const [timer, setTimer] = useState(0);
+  const [popScreen, setPopScreen] = useState(false);
 
   const userName = currentUser ? currentUser.displayName : name;
+
+  console.log("ID IN SOCKET", ioInstance?.id);
+
+  useEffect(() => {
+    paramsRef.current = { inviteCode, name };
+  }, [inviteCode, name]);
 
   useEffect(() => {
     const socket = io(import.meta.env.VITE_WEBSOCKET_URL, {
@@ -24,8 +33,9 @@ const useSocket = () => {
     });
 
     setIoInstance(socket);
-
-    socket.emit("join-game", inviteCode, userName);
+    if (inviteCode && userName) {
+      socket.emit("join-game", paramsRef.current.inviteCode, userName);
+    }
 
     return () => {
       removeListeners(socket);
@@ -44,6 +54,17 @@ const useSocket = () => {
     socket.on("connect", () => {
       console.log("Connected to server");
       setServerConnected(true);
+    });
+
+    socket.on("time-left", (timer: number, popOver) => {
+      setPopScreen(popOver);
+      setTimer(timer);
+      console.log("timer is", timer);
+      if (timer === 1) {
+        setTimeout(() => {
+          setPopScreen(false);
+        }, 1000);
+      }
     });
 
     socket.on("players", (players: Player[]) => {
@@ -104,8 +125,8 @@ const useSocket = () => {
     socket.off("error");
   }
 
-  const currentPlayer = players.find((player)=>player.id === ioInstance?.id)
-  const enemyPlayer = players.find((player)=>player.id !== ioInstance?.id)
+  const currentPlayer = players.find((player) => player.id === ioInstance?.id);
+  const enemyPlayer = players.find((player) => player.id !== ioInstance?.id);
 
   return {
     players,
@@ -116,7 +137,9 @@ const useSocket = () => {
     inviteCode,
     serverConnected,
     currentPlayer,
-    enemyPlayer
+    enemyPlayer,
+    timer,
+    popScreen,
   };
 };
 

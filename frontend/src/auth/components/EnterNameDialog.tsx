@@ -16,6 +16,7 @@ import { v4 as uuidv4 } from "uuid";
 import { FormEvent } from "react";
 import {  useToast } from "@/components/ui/use-toast";
 
+
 export function EnterNameDialog() {
   const { toast } = useToast();
   const navigate = useNavigate();

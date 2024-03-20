@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/card";
 import { GameProps } from "@/types";
 import TypingParagraph from "../components/TypingParagraph";
-import { useGameContext } from "@/context/GameContext";
 
 const PlayerScreen = ({
   name,
@@ -16,26 +15,18 @@ const PlayerScreen = ({
   gameStatus,
   paragraph,
   host,
+  setTimeLeft,
 }: GameProps) => {
-  // const { setPopOver } = useGameContext();
-  console.log(gameStatus);
-
-  const {setPopOver,setTimeLeft} = useGameContext()
-
-  // const [popOver, setPopOver] = useState<boolean>(false);
-
 
   function startGame() {
-    console.log("here");
     if (!ioInstance) return;
-    setPopOver(true);
-    setTimeLeft(6)
+    setTimeLeft(5)
     setTimeout(() => {
-      console.log("Inside timeout");
       ioInstance.emit("start-game");
-      setPopOver(false);
     }, 5000);
   }
+
+  
 
   return (
     <Card className="flex-1 rounded-lg m-4 shadow-md flex flex-col">

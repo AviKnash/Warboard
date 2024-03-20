@@ -5,9 +5,8 @@ import { GameFinishedScreen } from "./GameFinishedScreen";
 import useSocket from "@/hooks/useSocket";
 import { Loading } from "@/auth/components/Loading";
 import CountDown from "../components/CountDown";
-import { useGameContext } from "@/context/GameContext";
-import { useGame } from "@/hooks/useGame";
 import { useUserContext } from "@/context/AuthContext";
+import { useEffect, useState } from "react";
 
 const GamePage = () => {
   const {
@@ -20,21 +19,30 @@ const GamePage = () => {
     serverConnected,
     currentPlayer,
     enemyPlayer,
+    timer,
+    popScreen,
   } = useSocket();
 
-  const { timeLeft, popOver } = useGameContext();
-  const {userLoggedIn}= useUserContext()
+  const { userLoggedIn } = useUserContext();
+  const [timeLeft, setTimeLeft] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (timer === 0 && timeLeft === 0) {
+      console.log("TIME LEFT IS 0");
+      setTimeLeft(null);
+    }
+    if (!timeLeft) return;
+    const intervalId = setInterval(() => {
+      ioInstance?.emit("start-timer", timeLeft);
+      setTimeLeft((prev) => prev! - 1);
+      console.log("Ehehehehehe");
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [timeLeft]);
 
   const currentPlayerHasHigherScore =
     currentPlayer && enemyPlayer && currentPlayer?.score > enemyPlayer?.score;
-
-  // useEffect(() => {
-  //   if (gameStatus === "finished") {
-  //     addGame({ wpm:players[0].wpm, totalGames: 1 });
-  //   }
-  // }, [gameStatus, addGame, wpm]);
-
-
 
   return (
     <>
@@ -43,7 +51,7 @@ const GamePage = () => {
           <Loading />
         ) : gameStatus === "finished" ? (
           <GameFinishedScreen
-          userLoggedIn={userLoggedIn}
+            userLoggedIn={userLoggedIn}
             wpm={currentPlayer?.wpm}
             currentPlayerHasHigherScore={currentPlayerHasHigherScore}
           />
@@ -51,16 +59,15 @@ const GamePage = () => {
           <WaitingScreen gameId={inviteCode} />
         ) : (
           <>
-            {popOver && <CountDown count={timeLeft} />}
+            {popScreen && <CountDown count={timer} />}
             <PlayerScreen
-              // setPopOver={setPopOver}
               name={currentPlayer?.name}
               host={host}
               gameId={inviteCode}
               ioInstance={ioInstance}
               gameStatus={gameStatus}
               paragraph={paragraph}
-              // setTimeLeft={setTimeLeft}
+              setTimeLeft={setTimeLeft}
             />
             <EnemyScreen
               name={enemyPlayer?.name}

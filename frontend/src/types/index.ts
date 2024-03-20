@@ -53,8 +53,7 @@ export type GameProps = {
   gameStatus: string;
   ioInstance: Socket | undefined;
   paragraph: string;
-  // setPopOver: React.Dispatch<React.SetStateAction<boolean>>;
-  // setTimeLeft: React.Dispatch<React.SetStateAction<number | null>>;
+  setTimeLeft: React.Dispatch<React.SetStateAction<number | null>>;
 };
 
 export type EnemyGameProps = {

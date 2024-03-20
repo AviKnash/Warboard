@@ -19,6 +19,7 @@ export const useGame = () => {
   }) => {
     await addDoc(gameCollection, {
       userID: currentUser.userID,
+      userName:currentUser.displayName,
       wpm,
       totalGames,
       playedAt: serverTimestamp(),
