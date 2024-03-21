@@ -13,6 +13,8 @@ const SignIn = () => {
   const signIn = async () => {
     try {
       const result = await doSignInWithGoogle()
+ 
+      console.log(result);
     } catch (error) {
       console.log(error);
     }
