@@ -14,7 +14,6 @@ const SignIn = () => {
     try {
       const result = await doSignInWithGoogle()
  
-      console.log(result);
     } catch (error) {
       console.log(error);
     }

@@ -8,6 +8,8 @@ import CountDown from "../components/Game/CountDown";
 import { useUserContext } from "@/context/AuthContext";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import Camper from "../components/Game/UiComponents/SnowFloor";
+import { Snowfall } from "react-snowfall";
 
 const GamePage = () => {
   const {
@@ -26,8 +28,14 @@ const GamePage = () => {
 
   const { userLoggedIn } = useUserContext();
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
-  const currentPlayerHasHigherScore =
-    currentPlayer && enemyPlayer && currentPlayer?.score > enemyPlayer?.score;
+  const [currentPlayerHasHigherScore, setCurrentPlayerHasHigherScore] =
+    useState<boolean | undefined>(true);
+
+  useEffect(() => {
+    setCurrentPlayerHasHigherScore(
+      currentPlayer && enemyPlayer && currentPlayer.score > enemyPlayer.score
+    );
+  }, [gameStatus]);
 
   useEffect(() => {
     if (timer === 0 && timeLeft === 0) {
@@ -38,7 +46,6 @@ const GamePage = () => {
     const intervalId = setInterval(() => {
       ioInstance?.emit("start-timer", timeLeft);
       setTimeLeft((prev) => prev! - 1);
-      console.log("Ehehehehehe");
     }, 1000);
 
     return () => clearInterval(intervalId);
@@ -90,6 +97,8 @@ const GamePage = () => {
             ) : (
               <div className="flex flex-col w-full">
                 <div className="h-1/6 flex items-center justify-center">
+                  <Camper />
+                  <Snowfall snowflakeCount={300} />
                   {ioInstance?.id === host ? (
                     <>
                       <h1 className="text-center text-2xl items-center">

@@ -21,8 +21,6 @@ const useSocket = () => {
 
   const userName = currentUser ? currentUser.displayName : name;
 
-  console.log("ID IN SOCKET", ioInstance?.id);
-
   useEffect(() => {
     paramsRef.current = { inviteCode, name };
   }, [inviteCode, name]);
@@ -59,7 +57,6 @@ const useSocket = () => {
     socket.on("time-left", (timer: number, popOver) => {
       setPopScreen(popOver);
       setTimer(timer);
-      console.log("timer is", timer);
       if (timer === 1) {
         setTimeout(() => {
           setPopScreen(false);

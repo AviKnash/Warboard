@@ -17,7 +17,6 @@ const JoinGame = () => {
   const navigate = useNavigate();
 
   const joinGame = (e: FormEvent<HTMLFormElement>) => {
-    console.log("Here");
     e.preventDefault();
     const form = e.currentTarget;
     const formData = new FormData(form);

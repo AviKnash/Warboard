@@ -12,9 +12,6 @@ const EnemyScreen = ({
   paragraph,
   gameStatus,
 }: EnemyGameProps) => {
-
-
-
   return (
     <Card
       className="flex-1 rounded-lg m-4 shadow-md flex items-center justify-center"

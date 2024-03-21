@@ -22,7 +22,6 @@ export function EnterNameDialog() {
   const navigate = useNavigate();
 
   const createGame = (e: FormEvent<HTMLFormElement>) => {
-    console.log("here")
     e.preventDefault();
     const form = e.currentTarget;
     const formData = new FormData(form);

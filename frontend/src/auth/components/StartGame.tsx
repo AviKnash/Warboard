@@ -8,7 +8,7 @@ import FullSpinner from "./FullSpinner";
 
 const StartGame = () => {
   const { userLoggedIn, currentUser, isLoading } = useUserContext();
-  console.log(currentUser);
+
   return (
     <>
       {isLoading ? (

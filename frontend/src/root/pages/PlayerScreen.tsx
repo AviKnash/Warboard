@@ -1,7 +1,4 @@
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { GameProps } from "@/types";
 import TypingParagraph from "../components/Game/TypingParagraph";
 import spartan from "/helmet.png";
@@ -11,7 +8,6 @@ const PlayerScreen = ({
   ioInstance,
   gameStatus,
   paragraph,
-  host,
 }: GameProps) => {
   return (
     <Card
@@ -19,19 +15,9 @@ const PlayerScreen = ({
       style={{ backgroundImage: `url(${spartan})`, backgroundSize: "cover" }}
     >
       {gameStatus === "not-started" ? (
-        <>
-          {ioInstance?.id === host ? (
-            <>
-              <CardContent className="flex-grow">
-                <h1 className="text-6xl">{name}</h1>
-              </CardContent>
-            </>
-          ) : (
-            <CardContent className="flex-grow">
-              <h1 className="text-6xl">{name}</h1>
-            </CardContent>
-          )}
-        </>
+        <CardContent className="flex-grow">
+          <h1 className="text-6xl">{name}</h1>
+        </CardContent>
       ) : (
         <>
           <CardContent className="flex-grow">

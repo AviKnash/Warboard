@@ -1,5 +1,4 @@
 import { Outlet, Navigate } from "react-router-dom";
-// import sideImage from "/assets/images/cat.jpg";
 
 const AuthLayout = () => {
   const isAuthenticated = false;
@@ -10,7 +9,7 @@ const AuthLayout = () => {
         <Navigate to="/home/:invite-code" />
       ) : (
         <>
-          <section className="flex flex-1 justify-center items-center">
+          <section className="flex flex-1 justify-center items-center h-full">
             <Outlet />
           </section>
         </>

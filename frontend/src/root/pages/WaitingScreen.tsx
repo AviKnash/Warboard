@@ -2,15 +2,20 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import UserComments from "../components/UserComments";
+import { useToast } from "@/components/ui/use-toast";
 
 type WaitingScreenProps = {
   gameId: string | undefined;
 };
 
 const WaitingScreen = ({ gameId }: WaitingScreenProps) => {
+
+  const {toast} = useToast()
+
   const copyGameId = () => {
     if (!gameId) return;
     navigator.clipboard.writeText(gameId);
+    toast({title:"Copied to clipboard!"})
   };
 
   return (
