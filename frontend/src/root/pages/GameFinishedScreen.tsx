@@ -13,6 +13,7 @@ export function GameFinishedScreen({
   userLoggedIn: boolean | undefined;
 }) {
   const { addGame } = useGame();
+  const {user,getUser} = 
 
   useEffect(() => {
     userLoggedIn && addGame({ wpm, totalGames: 1 });

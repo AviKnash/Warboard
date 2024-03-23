@@ -10,6 +10,13 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Camper from "../components/Game/UiComponents/SnowFloor";
 import { Snowfall } from "react-snowfall";
+import swords from "/swords.png";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card"
+
 
 const GamePage = () => {
   const {
@@ -59,6 +66,8 @@ const GamePage = () => {
     }, 5000);
   }
 
+  
+
   return (
     <>
       <div className="w-3/4 flex flex-row h-2/3">
@@ -101,16 +110,21 @@ const GamePage = () => {
                   <Snowfall snowflakeCount={300} />
                   {ioInstance?.id === host ? (
                     <>
-                      <h1 className="text-center text-2xl items-center">
-                        Ready to battle?
-                      </h1>
+                        <HoverCard defaultOpen closeDelay={600}>
+                          <HoverCardTrigger>
                       <Button
                         onClick={startGame}
                         variant="link"
                         className="text-2xl underline"
                       >
-                        Start
+                        <div className=" flex h-20 w-20">
+
+                          <img  src={swords} />
+                        </div>
                       </Button>
+                    </HoverCardTrigger>
+                    <HoverCardContent className="flex items-center justify-center"><h1>Click to start!</h1></HoverCardContent>
+                    </HoverCard>
                     </>
                   ) : (
                     <h1 className="text-center text-2xl items-center">

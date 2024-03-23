@@ -16,7 +16,7 @@ const StartGame = () => {
       ) : (
         <div className="grid grid-cols-1 justify-items-center items-center">
           <div className="grid grid-col-1">
-            <img draggable={false} src={logo} className="h-36 p-5"/>
+            <img draggable={false} src={logo} className="h-36 p-5" />
           </div>
           {userLoggedIn && !isLoading && (
             <div className="grid grid-col-1 mt-5">

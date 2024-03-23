@@ -22,7 +22,7 @@ const LoseScreen = ({ wpm, restartPage }: ILoseProps) => {
      <SnowFall />
       <Card className="h-auto rounded-lg shadow-md flex flex-col items-center justify-center w-1/2">
         <CardHeader>
-          <CardTitle>"Too bad.."</CardTitle>
+          <CardTitle>"Too slow..."</CardTitle>
         </CardHeader>
 
         <CardContent className="flex flex-col items-center justify-center">

@@ -1,7 +1,9 @@
+import TopBar from "@/root/components/TopBar";
 import { Outlet, Navigate } from "react-router-dom";
 
 const AuthLayout = () => {
   const isAuthenticated = false;
+
 
   return (
     <>
@@ -9,7 +11,8 @@ const AuthLayout = () => {
         <Navigate to="/home/:invite-code" />
       ) : (
         <>
-          <section className="flex flex-1 justify-center items-center h-full">
+        <TopBar />
+          <section className="flex flex-1 justify-center items-center h-full" style={{ height: `calc(100vh - 7vh)` }}>
             <Outlet />
           </section>
         </>

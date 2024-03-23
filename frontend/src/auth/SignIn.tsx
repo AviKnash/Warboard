@@ -6,21 +6,19 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { doSignInWithGoogle } from "@/firebase/api";
-import GoogleButton from 'react-google-button'
+import { useUser } from "@/hooks/useUser";
+import GoogleButton from "react-google-button";
 
 const SignIn = () => {
+  const { addUser } = useUser();
 
   const signIn = async () => {
     try {
-      const result = await doSignInWithGoogle()
- 
-      console.log(result);
+      addUser();
     } catch (error) {
       console.log(error);
     }
   };
-
-
 
   return (
     <Card className="flex-1 rounded-lg m-4 shadow-md flex flex-col">
@@ -31,7 +29,9 @@ const SignIn = () => {
         <p>Login using your Google account!</p>
       </CardContent>
       <CardFooter className="flex justify-center mt-auto">
-        <GoogleButton label="Sign In" onClick={signIn}>Create game</GoogleButton>
+        <GoogleButton label="Sign In" onClick={signIn}>
+          Create game
+        </GoogleButton>
       </CardFooter>
     </Card>
   );

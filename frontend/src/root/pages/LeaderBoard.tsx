@@ -3,7 +3,7 @@ import { useGetLeaderBoard } from "@/hooks/useGetLeaderBoard";
 import { TableHead, TableRow, TableHeader, TableCell, TableBody, Table } from "@/components/ui/table";
 import { Card } from "@/components/ui/card";
 
-export default function Component() {
+export default function LeaderBoard() {
   const { leaderBoard, loading } = useGetLeaderBoard();
 
   return (

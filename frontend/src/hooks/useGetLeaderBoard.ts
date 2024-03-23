@@ -34,6 +34,7 @@ export const useGetLeaderBoard = () => {
             id,
             userName:data.userName,
             playedAt: data.playedAt,
+            gamesWon:data.gamesWon,
             totalGames: data.totalGames,
             userID: data.userID,
             wpm: data.wpm,

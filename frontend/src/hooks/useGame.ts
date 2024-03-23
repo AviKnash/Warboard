@@ -2,10 +2,6 @@ import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "@/firebase/firebase";
 import { useUserContext } from "@/context/AuthContext";
 
-// type IGameProps = {
-//     wpm:
-// }
-
 export const useGame = () => {
   const gameCollection = collection(db, "game");
   const { currentUser } = useUserContext();

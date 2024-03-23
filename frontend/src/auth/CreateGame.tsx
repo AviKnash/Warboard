@@ -23,14 +23,14 @@ const CreateGame = () => {
   return (
     <Card className="flex-1 rounded-lg m-4 shadow-md flex flex-col">
       <CardHeader>
-        <CardTitle>Create a game</CardTitle>
+        <CardTitle>Create a game!</CardTitle>
       </CardHeader>
       <CardContent className="flex-grow">
-        <p>Create a game where you can invite a friend to battle it out!</p>
+        <p>Click to make a room and share the code to battle it out!!</p>
       </CardContent>
       <CardFooter className="flex justify-center mt-auto">
         {userLoggedIn ? (
-          <Button onClick={createGame}>Create game</Button>
+          <Button onClick={createGame}>Home</Button>
         ) : (
           <EnterNameDialog />
         )}
