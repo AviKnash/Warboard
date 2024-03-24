@@ -5,6 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "prestart": "chmod +x node_modules/.bin/ts-node",
     "start": "ts-node index.ts"
   },
   "author": "",
