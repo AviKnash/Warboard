@@ -3,7 +3,7 @@ const app = express();
 const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
-const { setupListeners } = require("./listeners");
+const { setupListeners } = require("./listeners.ts");
 
 app.use(cors());
 const server = http.createServer(app);
