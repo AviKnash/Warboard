@@ -7,7 +7,7 @@ const { setupListeners } = require("./listeners.ts");
 
 app.use(cors());
 const server = http.createServer(app);
-const PORT = "3001";
+const PORT = process.env.PORT || 3001;
 
 const io = new Server(server, {
   cors: {
@@ -18,5 +18,5 @@ const io = new Server(server, {
 
 setupListeners(io)
 
-server.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+server.listen(PORT,"0.0.0.0", () => console.log(`Server is running on port ${PORT}`));
 
