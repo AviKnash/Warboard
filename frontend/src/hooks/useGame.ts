@@ -1,25 +1,40 @@
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "@/firebase/firebase";
 import { useUserContext } from "@/context/AuthContext";
 
 export const useGame = () => {
   const gameCollection = collection(db, "game");
   const { currentUser } = useUserContext();
+  const userDocument = doc(db, "user", currentUser.userID);
 
-  const addGame = async ({
-    wpm,
-    totalGames,
-  }: {
-    wpm: number | undefined;
-    totalGames: number | undefined;
-  }) => {
+  const addGame = async ({ wpm }: { wpm: number | undefined }) => {
     await addDoc(gameCollection, {
       userID: currentUser.userID,
-      userName:currentUser.displayName,
+      userName: currentUser.displayName,
       wpm,
-      totalGames,
       playedAt: serverTimestamp(),
     });
   };
-  return { addGame };
+
+  const addUserStats = async ({
+    totalGames,
+    gamesWon,
+  }: {
+    totalGames: number;
+    gamesWon: number;
+  }) => {
+    console.log(totalGames, gamesWon);
+    await updateDoc(userDocument, {
+      totalGames,
+      gamesWon,
+    });
+  };
+
+  return { addGame, addUserStats };
 };

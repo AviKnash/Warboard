@@ -16,7 +16,9 @@ type IUser =
   | {
       displayName: string;
       photoURL: string;
-      userID:string
+      userID:string;
+      totalGames:number;
+      gamesWon:number
     }
   | undefined;
 
@@ -27,7 +29,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [currentUser, setCurrentUser] = useState<IUser>({
     displayName: "",
     photoURL: "",
-    userID:""
+    userID:"",
+    totalGames:0,
+    gamesWon:0
   });
   const [userLoggedIn, setUserLoggedIn] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -43,7 +47,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setCurrentUser({
         displayName: user.displayName,
         photoURL: user.photoURL,
-        userID:user.uid
+        userID:user.uid,
+        totalGames:0,
+        gamesWon:0
       });
       setUserLoggedIn(true);
     } else {

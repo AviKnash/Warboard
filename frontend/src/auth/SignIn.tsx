@@ -5,7 +5,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { doSignInWithGoogle } from "@/firebase/api";
 import { useUser } from "@/hooks/useUser";
 import GoogleButton from "react-google-button";
 

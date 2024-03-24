@@ -1,9 +1,10 @@
 import {
-  addDoc,
   collection,
+  doc,
   getDocs,
   onSnapshot,
   query,
+  setDoc,
   where,
 } from "firebase/firestore";
 import { db } from "@/firebase/firebase";
@@ -58,12 +59,13 @@ export const useUser = () => {
       const { user } = await doSignInWithGoogle();
       if (user) {
         const { displayName, uid, email } = user;
-  
+
         const userQuery = query(userCollection, where("userID", "==", uid));
         const querySnapshot = await getDocs(userQuery);
-  
+        const userRefCollection = doc(db, "user", uid);
+
         if (querySnapshot.empty) {
-          await addDoc(userCollection, {
+          await setDoc(userRefCollection, {
             userID: uid,
             totalGames: 0,
             gamesWon: 0,
@@ -78,7 +80,6 @@ export const useUser = () => {
       console.log(error);
     }
   };
-  
 
-  return { addUser,getUser,user, loading};
+  return { addUser, getUser, user, loading };
 };

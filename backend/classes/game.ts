@@ -47,7 +47,7 @@ export class Game {
         this.gameStatus = "finished";
         this.io.to(this.gameId).emit("game-finished");
         this.io.to(this.gameId).emit("players", this.players);
-      }, 60000);
+      }, 10000);
     });
 
     socket.on("start-timer",(timer:number)=>{

@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import LoseScreen from "./GameOver/LoseScreen";
 import WinScreen from "./GameOver/WinScreen";
 import { useGame } from "@/hooks/useGame";
+import { useUserContext } from "@/context/AuthContext";
+import { useGetUser } from "@/hooks/useGetUser";
 
 export function GameFinishedScreen({
   currentPlayerHasHigherScore,
@@ -12,26 +14,39 @@ export function GameFinishedScreen({
   wpm: number | undefined;
   userLoggedIn: boolean | undefined;
 }) {
-  const { addGame } = useGame();
-  const {user,getUser} = 
 
-  useEffect(() => {
-    userLoggedIn && addGame({ wpm, totalGames: 1 });
-  }, []);
+  if (userLoggedIn) {
+    const { addGame, addUserStats } = useGame();
+    const { currentUser } = useUserContext();
+    const { user, loading } = useGetUser(currentUser?.userID);
+
+    useEffect(() => {
+      if (userLoggedIn && user && !loading) {
+        const userNewTotalGames = user.totalGames + 1;
+        const userNewGamesWon = currentPlayerHasHigherScore
+          ? user.gamesWon + 1
+          : user.gamesWon;
+
+        addGame({ wpm });
+        addUserStats({
+          totalGames: userNewTotalGames,
+          gamesWon: userNewGamesWon,
+        });
+      }
+    }, [loading]);
+  }
 
   const restartPage = () => {
     window.location.reload();
   };
 
-  console.log(currentPlayerHasHigherScore)
-
   return (
     <>
       {currentPlayerHasHigherScore ? (
         <WinScreen wpm={wpm} restartPage={restartPage} />
-        ) : (
-          <LoseScreen wpm={wpm} restartPage={restartPage} />
-          )}
-          </>
+      ) : (
+        <LoseScreen wpm={wpm} restartPage={restartPage} />
+      )}
+    </>
   );
 }
