@@ -3,7 +3,7 @@ import PlayerScreen from "./PlayerScreen";
 import WaitingScreen from "./WaitingScreen";
 import { GameFinishedScreen } from "./GameFinishedScreen";
 import useSocket from "@/hooks/useSocket";
-import { Loading } from "@/auth/components/Loading";
+import Loading from "@/auth/components/Loading";
 import CountDown from "../components/Game/CountDown";
 import { useUserContext } from "@/context/AuthContext";
 import { useEffect, useState } from "react";
@@ -15,8 +15,7 @@ import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "@/components/ui/hover-card"
-
+} from "@/components/ui/hover-card";
 
 const GamePage = () => {
   const {
@@ -37,6 +36,7 @@ const GamePage = () => {
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
   const [currentPlayerHasHigherScore, setCurrentPlayerHasHigherScore] =
     useState<boolean | undefined>(true);
+  const [gameTimer, setGameTimer] = useState<number>(60);
 
   useEffect(() => {
     setCurrentPlayerHasHigherScore(
@@ -66,7 +66,18 @@ const GamePage = () => {
     }, 5000);
   }
 
-  
+  useEffect(() => {
+    if (gameTimer === 0) return;
+
+    if (gameStatus === "in-progress") {
+      const gameInterval = setTimeout(() => {
+        setGameTimer((prev) => prev - 1);
+      }, 1000);
+      return () => clearInterval(gameInterval);
+    }
+  }, [gameTimer,gameStatus]);
+
+  console.log(gameTimer)
 
   return (
     <>
@@ -86,22 +97,27 @@ const GamePage = () => {
             {popScreen && <CountDown count={timer} />}
             {gameStatus === "in-progress" ? (
               <>
-                <PlayerScreen
-                  name={currentPlayer?.name}
-                  host={host}
-                  gameId={inviteCode}
-                  ioInstance={ioInstance}
-                  gameStatus={gameStatus}
-                  paragraph={paragraph}
-                  setTimeLeft={setTimeLeft}
-                />
-                <EnemyScreen
-                  name={enemyPlayer?.name}
-                  gameId={inviteCode}
-                  ioInstance={ioInstance}
-                  gameStatus={gameStatus}
-                  paragraph={paragraph}
-                />
+                <div className="w-full flex border border-white">
+                  <PlayerScreen
+                    name={currentPlayer?.name}
+                    host={host}
+                    gameId={inviteCode}
+                    ioInstance={ioInstance}
+                    gameStatus={gameStatus}
+                    paragraph={paragraph}
+                    setTimeLeft={setTimeLeft}
+                  />
+                  <div className="flex items-center justify-center text-white text-6xl font-semibold italic">
+                    <h1>{gameTimer}</h1>
+                  </div>
+                  <EnemyScreen
+                    name={enemyPlayer?.name}
+                    gameId={inviteCode}
+                    ioInstance={ioInstance}
+                    gameStatus={gameStatus}
+                    paragraph={paragraph}
+                  />
+                </div>
               </>
             ) : (
               <div className="flex flex-col w-full">
@@ -110,21 +126,22 @@ const GamePage = () => {
                   <Snowfall snowflakeCount={300} />
                   {ioInstance?.id === host ? (
                     <>
-                        <HoverCard defaultOpen closeDelay={600}>
-                          <HoverCardTrigger>
-                      <Button
-                        onClick={startGame}
-                        variant="link"
-                        className="text-2xl underline"
-                      >
-                        <div className=" flex h-20 w-20">
-
-                          <img  src={swords} />
-                        </div>
-                      </Button>
-                    </HoverCardTrigger>
-                    <HoverCardContent className="flex items-center justify-center"><h1>Click to start!</h1></HoverCardContent>
-                    </HoverCard>
+                      <HoverCard defaultOpen closeDelay={600}>
+                        <HoverCardTrigger>
+                          <Button
+                            onClick={startGame}
+                            variant="link"
+                            className="text-2xl underline"
+                          >
+                            <div className=" flex h-20 w-20">
+                              <img src={swords} />
+                            </div>
+                          </Button>
+                        </HoverCardTrigger>
+                        <HoverCardContent className="flex items-center justify-center">
+                          <h1>Click to start!</h1>
+                        </HoverCardContent>
+                      </HoverCard>
                     </>
                   ) : (
                     <h1 className="text-center text-2xl items-center">

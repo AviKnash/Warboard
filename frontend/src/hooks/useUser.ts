@@ -1,6 +1,7 @@
 import {
   collection,
   doc,
+  getDocs,
   getDocsFromCache,
   onSnapshot,
   query,
@@ -63,7 +64,7 @@ export const useUser = () => {
         const { displayName, uid, email } = user;
 
         const userQuery = query(userCollection, where("userID", "==", uid));
-        const querySnapshot = await getDocsFromCache(userQuery);
+        const querySnapshot = await getDocs(userQuery);
         const userRefCollection = doc(db, "user", uid);
 
         if (querySnapshot.empty) {

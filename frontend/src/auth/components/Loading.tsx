@@ -1,20 +1,22 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
-export function Loading() {
+const Loading = () => {
   return (
-    <Card className="flex-1 rounded-lg m-4 shadow-md flex flex-col">
-      <CardHeader>
-        <CardTitle>Connection is initializing..</CardTitle>
-      </CardHeader>
+    <div className="grid grid-cols-1 justify-items-center w-full h-screen items-center">
+      <Skeleton className="h-[225px] w-[550px] rounded-xl" />
+      <div className="grid grid-cols-2">
+        <div className="p-4">
 
-      <CardContent className="flex-grow">
-        <p>Please hold on, while connection is set up.</p>
-      </CardContent>
-    </Card>
+        <Skeleton className="h-[225px] w-[550px] rounded-xl" />
+        <Skeleton className="h-4 w-[200px]" />
+        </div>
+        <div className="p-4">
+        <Skeleton className="h-[225px] w-[550px] rounded-xl" />
+        <Skeleton className="h-4 w-[200px]" />
+        </div>
+      </div>
+    </div>
   );
-}
+};
+
+export default Loading;
