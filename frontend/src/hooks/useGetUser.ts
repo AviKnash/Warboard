@@ -18,7 +18,7 @@ const INITAL_USER={
     emailAddress:""
 }
 
-export const useGetUser = (userID: string) => {
+export const useGetUser = (userID: string | undefined) => {
   const [user, setUser] = useState<User>(INITAL_USER);
   const [loading, setLoading] = useState(true);
 

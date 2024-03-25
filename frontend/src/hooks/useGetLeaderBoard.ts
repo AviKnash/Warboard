@@ -1,14 +1,22 @@
 import { useEffect, useState } from "react";
 import { db } from "@/firebase/firebase";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  getDoc,
+  onSnapshot,
+  orderBy,
+  query,
+  doc as document,
+} from "firebase/firestore";
 
 interface Game {
   id: string;
   playedAt: any;
   totalGames: number;
+  gamesWon: number;
   userID: string;
   wpm: number;
-  userName:string;
+  userName: string;
 }
 
 export const useGetLeaderBoard = () => {
@@ -23,25 +31,29 @@ export const useGetLeaderBoard = () => {
     try {
       const queryGame = query(gameCollectionRef, orderBy("wpm", "desc"));
 
-      unsubscribe = onSnapshot(queryGame, (snapshot) => {
+      unsubscribe = onSnapshot(queryGame, async (snapshot) => {
         let docs: Game[] = [];
 
-        snapshot.forEach((doc) => {
+        for (const doc of snapshot.docs) {
           const data = doc.data();
           const id = doc.id;
+          const userCollection = document(db, "user", data.userID);
+          const userSnapshot = await getDoc(userCollection);
+          const userFromDB = userSnapshot.data();
 
-          const gameData = {
+          const gameData: Game = {
             id,
-            userName:data.userName,
+            userName: data.userName,
             playedAt: data.playedAt,
-            gamesWon:data.gamesWon,
-            totalGames: data.totalGames,
+            gamesWon: userFromDB?.gamesWon | 0,
+            totalGames: userFromDB?.totalGames | 0,
             userID: data.userID,
             wpm: data.wpm,
           };
 
           docs.push(gameData);
-        });
+        }
+
         setLeaderBoard(docs);
         setLoading(false);
       });

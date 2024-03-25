@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import { AvatarDemo } from "./UserIcon";
+import { useUserContext } from "@/context/AuthContext";
 
-const TopBar = () => {;
+const TopBar = () => {
+  const { userLoggedIn ,currentUser} = useUserContext();
   const homeLink = `/start-game`;
   const leaderboardLink = `/start-game/leaderboard`;
 
@@ -17,9 +19,11 @@ const TopBar = () => {;
           <Link to={leaderboardLink} className="hover:text-gray-300">
             Leaderboard
           </Link>
-          <Link to="#" className="hover:text-gray-300">
-            <AvatarDemo />
-          </Link>
+          {userLoggedIn && (
+            <Link to="#" className="hover:text-gray-300">
+              <AvatarDemo currentUser={currentUser}/>
+            </Link>
+          )}
         </div>
       </div>
     </div>

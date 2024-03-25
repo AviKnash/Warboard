@@ -1,26 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import { createContext, useContext, useEffect, useState } from "react";
-import { auth } from "@/firebase/firebase";
-import { IContextType } from "@/types";
+import { auth, db } from "@/firebase/firebase";
+import { IContextType, IUser } from "@/types";
 import { onAuthStateChanged } from "firebase/auth";
+import {  doc, getDoc } from "firebase/firestore";
 
 const INITIAL_STATE = {
-  currentUser: null,
+  currentUser: undefined,
   isLoading: false,
   userLoggedIn: false,
   setCurrentUser: () => {},
   setUserLoggedIn: () => {},
 };
-
-type IUser =
-  | {
-      displayName: string;
-      photoURL: string;
-      userID:string;
-      totalGames:number;
-      gamesWon:number
-    }
-  | undefined;
 
 const AuthContext = createContext<IContextType>(INITIAL_STATE);
 
@@ -29,9 +20,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [currentUser, setCurrentUser] = useState<IUser>({
     displayName: "",
     photoURL: "",
-    userID:"",
-    totalGames:0,
-    gamesWon:0
+    userID: "",
+    email:"",
+    totalGames: 0,
+    gamesWon: 0,
   });
   const [userLoggedIn, setUserLoggedIn] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -43,13 +35,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const initializeUser = async (user: any) => {
     setIsLoading(true);
+
     if (user) {
+      const userCollection = doc(db, "user", user.uid);
+      const userSnapshot = await getDoc(userCollection);
+      const userFromDB = userSnapshot.data();
+
       setCurrentUser({
         displayName: user.displayName,
         photoURL: user.photoURL,
-        userID:user.uid,
-        totalGames:0,
-        gamesWon:0
+        userID: user.uid,
+        email:user.email,
+        totalGames: userFromDB?.totalGames | 0,
+        gamesWon: userFromDB?.gamesWon | 0,
       });
       setUserLoggedIn(true);
     } else {

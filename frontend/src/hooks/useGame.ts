@@ -11,12 +11,12 @@ import { useUserContext } from "@/context/AuthContext";
 export const useGame = () => {
   const gameCollection = collection(db, "game");
   const { currentUser } = useUserContext();
-  const userDocument = doc(db, "user", currentUser.userID);
+  const userDocument = currentUser && doc(db, "user", currentUser.userID);
 
   const addGame = async ({ wpm }: { wpm: number | undefined }) => {
     await addDoc(gameCollection, {
-      userID: currentUser.userID,
-      userName: currentUser.displayName,
+      userID: currentUser?.userID,
+      userName: currentUser?.displayName,
       wpm,
       playedAt: serverTimestamp(),
     });
@@ -30,10 +30,13 @@ export const useGame = () => {
     gamesWon: number;
   }) => {
     console.log(totalGames, gamesWon);
-    await updateDoc(userDocument, {
-      totalGames,
-      gamesWon,
-    });
+
+    if (userDocument) {
+      await updateDoc(userDocument, {
+        totalGames,
+        gamesWon,
+      });
+    }
   };
 
   return { addGame, addUserStats };

@@ -4,7 +4,7 @@ import {
     AvatarImage,
   } from "@/components/ui/avatar"
   
-  export function UserCommentIcon({icon}:{icon:string}) {
+  export function UserCommentIcon({icon}:{icon:string | undefined}) {
 
 
     return (

@@ -15,9 +15,11 @@ const CreateGame = () => {
   const navigate = useNavigate();
 
   const { currentUser, userLoggedIn } = useUserContext();
+
+  console.log(currentUser,userLoggedIn)
   const createGame = () => {
     const inviteCode = uuidv4();
-    return navigate(`/home/${inviteCode}/${currentUser.displayName}`);
+    return navigate(`/home/${inviteCode}/${currentUser?.displayName}`);
   };
 
   return (

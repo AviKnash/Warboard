@@ -1,7 +1,7 @@
 import {
   collection,
   doc,
-  getDocs,
+  getDocsFromCache,
   onSnapshot,
   query,
   setDoc,
@@ -39,6 +39,7 @@ export const useUser = () => {
             gamesWon: data.gamesWon,
             userID: data.userID,
           };
+          console.log(doc.data());
           setUser(userData);
         });
 
@@ -57,11 +58,12 @@ export const useUser = () => {
   const addUser = async () => {
     try {
       const { user } = await doSignInWithGoogle();
+      console.log(user);
       if (user) {
         const { displayName, uid, email } = user;
 
         const userQuery = query(userCollection, where("userID", "==", uid));
-        const querySnapshot = await getDocs(userQuery);
+        const querySnapshot = await getDocsFromCache(userQuery);
         const userRefCollection = doc(db, "user", uid);
 
         if (querySnapshot.empty) {

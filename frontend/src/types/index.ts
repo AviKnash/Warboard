@@ -1,7 +1,7 @@
 import { Socket } from "socket.io-client";
 
 export type IContextType = {
-  currentUser: any;
+  currentUser: IUser;
   isLoading: boolean;
   setCurrentUser: React.Dispatch<React.SetStateAction<any>>;
   userLoggedIn: boolean;
@@ -22,9 +22,16 @@ export type IGameContext = {
   setTimeLeft: React.Dispatch<React.SetStateAction<any>>
 };
 
-export type IUser = {
-  name: string;
-};
+export type IUser =
+  | {
+      displayName: string;
+      photoURL: string;
+      userID:string;
+      email:string,
+      totalGames:number | undefined;
+      gamesWon:number | undefined
+    }
+  | undefined;
 
 export type Player = {
   id: string;
