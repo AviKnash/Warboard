@@ -17,6 +17,7 @@ const useSocket = () => {
   const [serverConnected, setServerConnected] = useState<boolean>(false);
   const { currentUser } = useUserContext();
   const [timer, setTimer] = useState(0);
+  const [gameTimer,setGameTimer] = useState(0)
   const [popScreen, setPopScreen] = useState(false);
 
   const userName = currentUser ? currentUser.displayName : name;
@@ -62,6 +63,10 @@ const useSocket = () => {
           setPopScreen(false);
         }, 1000);
       }
+    });
+
+    socket.on("gaming-left", (gameTimer: number) => {
+      setGameTimer(gameTimer);
     });
 
     socket.on("players", (players: Player[]) => {
@@ -120,6 +125,7 @@ const useSocket = () => {
     socket.off("game-finished");
     socket.off("new-host");
     socket.off("error");
+    socket.off("time-left");
   }
 
   const currentPlayer = players.find((player) => player.id === ioInstance?.id);
@@ -137,6 +143,7 @@ const useSocket = () => {
     enemyPlayer,
     timer,
     popScreen,
+    gameTimer
   };
 };
 

@@ -1,8 +1,7 @@
 import {
   collection,
   doc,
-  getDocs,
-  getDocsFromCache,
+  getDoc,
   onSnapshot,
   query,
   setDoc,
@@ -63,11 +62,10 @@ export const useUser = () => {
       if (user) {
         const { displayName, uid, email } = user;
 
-        const userQuery = query(userCollection, where("userID", "==", uid));
-        const querySnapshot = await getDocs(userQuery);
         const userRefCollection = doc(db, "user", uid);
+        const querySnapshot = await getDoc(userRefCollection);
 
-        if (querySnapshot.empty) {
+        if (!querySnapshot.exists()) {
           await setDoc(userRefCollection, {
             userID: uid,
             totalGames: 0,

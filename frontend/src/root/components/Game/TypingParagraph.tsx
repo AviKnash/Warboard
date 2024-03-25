@@ -56,7 +56,7 @@ const TypingParagraph: React.FC<TypingParagraphProps> = ({
     );
   };
 
-  return <div>{paragraph && paragraph.split("").map(renderLetter)}</div>;
+  return <div className="border border-white">{paragraph && paragraph.split("").map(renderLetter)}</div>;
 };
 
 export default TypingParagraph;
