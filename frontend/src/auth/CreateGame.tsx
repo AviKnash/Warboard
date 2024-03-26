@@ -22,6 +22,10 @@ const CreateGame = () => {
     return navigate(`/home/${inviteCode}/${currentUser?.displayName}`);
   };
 
+  const createSinglePlayerGame = ()=>{
+    return navigate(`/home/practice`)
+  }
+
   return (
     <Card className="flex-1 rounded-lg m-4 shadow-md flex flex-col">
       <CardHeader>
@@ -32,10 +36,13 @@ const CreateGame = () => {
       </CardContent>
       <CardFooter className="flex justify-center mt-auto">
         {userLoggedIn ? (
-          <Button onClick={createGame}>Home</Button>
-        ) : (
-          <EnterNameDialog />
+          <Button className="m-2" onClick={createGame}>Multiplayer Battle</Button>
+          ) : (
+
+            <EnterNameDialog />
+  
         )}
+        <Button onClick={createSinglePlayerGame} className="m-2">Practice Singleplayer</Button>
       </CardFooter>
     </Card>
   );

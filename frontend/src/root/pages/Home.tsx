@@ -74,7 +74,7 @@ const GamePage = () => {
     if (!ioInstance) return;
     setTimeLeft(5);
     setTimeout(() => {
-      setGameTimerLeft(60);
+      setGameTimerLeft(50);
       ioInstance.emit("start-game");
     }, 5000);
   }
