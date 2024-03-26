@@ -17,8 +17,9 @@ const useSocket = () => {
   const [serverConnected, setServerConnected] = useState<boolean>(false);
   const { currentUser } = useUserContext();
   const [timer, setTimer] = useState(0);
-  const [gameTimer,setGameTimer] = useState(0)
+  const [gameTimer, setGameTimer] = useState(0);
   const [popScreen, setPopScreen] = useState(false);
+  const [typingErrors, setTypingErrors] = useState(0);
 
   const userName = currentUser ? currentUser.displayName : name;
 
@@ -63,6 +64,10 @@ const useSocket = () => {
           setPopScreen(false);
         }, 1000);
       }
+    });
+
+    socket.on("recieved-errors", (errors: number) => {
+      setTypingErrors(errors);
     });
 
     socket.on("gaming-left", (gameTimer: number) => {
@@ -143,7 +148,8 @@ const useSocket = () => {
     enemyPlayer,
     timer,
     popScreen,
-    gameTimer
+    gameTimer,
+    typingErrors
   };
 };
 

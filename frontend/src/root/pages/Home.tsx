@@ -31,6 +31,7 @@ const GamePage = () => {
     timer,
     popScreen,
     gameTimer,
+    typingErrors
   } = useSocket();
   const { userLoggedIn } = useUserContext();
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
@@ -102,7 +103,7 @@ const GamePage = () => {
       <>
         {popScreen && <CountDown count={timer} />}
         {gameStatus === "in-progress"  ? (
-          <div className="w-full flex">
+          <div className="w-full flex flex-col">
             <PlayerScreen
               name={currentPlayer?.name}
               host={host}
@@ -111,6 +112,7 @@ const GamePage = () => {
               gameStatus={gameStatus}
               paragraph={paragraph}
               setTimeLeft={setTimeLeft}
+              typingErrors={typingErrors}
             />
             <div className="flex items-center justify-center text-white text-6xl font-semibold italic">
               <h1>{gameTimer}</h1>
@@ -160,6 +162,7 @@ const GamePage = () => {
                 gameStatus={gameStatus}
                 paragraph={paragraph}
                 setTimeLeft={setTimeLeft}
+                typingErrors={typingErrors}
               />
               <div className="flex items-center justify-center text-white text-6xl font-semibold italic">
                 <h1>VS</h1>

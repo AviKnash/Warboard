@@ -61,6 +61,7 @@ export type GameProps = {
   ioInstance: Socket | undefined;
   paragraph: string;
   setTimeLeft: React.Dispatch<React.SetStateAction<number | null>>;
+  typingErrors:number;
 };
 
 export type EnemyGameProps = {

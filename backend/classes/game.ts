@@ -57,6 +57,12 @@ export class Game {
 
     })
 
+    socket.on("typed-errors",(errors:number)=>{
+      console.log("Errors are",errors)
+
+      this.io.to(this.gameId).emit("recieved-errors",errors)
+    })
+
     socket.on("game-timer",(gameTimer:number)=>{
       console.log("ITS HERE")
       console.log("game timer is",gameTimer)

@@ -4,15 +4,16 @@ import { Socket } from "socket.io-client";
 interface TypingParagraphProps {
   paragraph: string;
   ioInstance: Socket | undefined;
+  typingErrors: number;
 }
 
 const TypingParagraph: React.FC<TypingParagraphProps> = ({
   paragraph,
   ioInstance,
+  typingErrors,
 }) => {
   const [currentPosition, setCurrentPosition] = useState(0);
   const [isCurrentVisible, setIsCurrentVisible] = useState(true);
-  
 
   const toggleCurrentVisibility = () => {
     setIsCurrentVisible((prev) => !prev);
@@ -24,6 +25,8 @@ const TypingParagraph: React.FC<TypingParagraphProps> = ({
 
       if (!ioInstance) return;
       ioInstance.emit("player-typed", event.key);
+    } else {
+      ioInstance?.emit("typed-errors", (typingErrors += 1));
     }
   };
 
@@ -50,9 +53,11 @@ const TypingParagraph: React.FC<TypingParagraphProps> = ({
     }
 
     return (
-      <span key={index} className={className}>
-        {letter}
-      </span>
+      <>
+        <span key={index} className={className}>
+          {letter}
+        </span>
+      </>
     );
   };
 
