@@ -20,7 +20,9 @@ const handleClick =()=>{
 
   return (
     <Button
+    tabIndex={-1}
     variant={"ghost"}
+    ref={buttonRef}
       className={`block rounded px-8 py-2 hover:bg-slate-800 ${className}`}
       onClick={handleClick}
     >

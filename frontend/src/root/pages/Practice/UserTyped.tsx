@@ -3,9 +3,11 @@ import Character from "./Character";
 
 const UserTyped = ({
   userInput,
+  words,
   className,
 }: {
   userInput: string;
+  words:string;
   className?: string;
 }) => {
   const typedCharacters = userInput.split("");
@@ -13,7 +15,7 @@ const UserTyped = ({
   return (
     <div className={className}>
       {typedCharacters.map((char, index) => {
-        return <Character key={`${char}_${index}`} char={char} />;
+        return <Character key={`${char}_${index}`} actual={char} expected={words[index]} />;
       })}
       <Cursor />
     </div>
