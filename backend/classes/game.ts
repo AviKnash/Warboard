@@ -30,7 +30,6 @@ export class Game {
         return socket.emit("error", "You are not the host of the game.");
       }
 
-
       for (const player of this.players) {
         player.score = 0;
       }
@@ -43,33 +42,52 @@ export class Game {
       this.paragraph = paragraph;
       this.io.to(this.gameId).emit("game-started", paragraph);
 
-      setTimeout(() => {
-        this.gameStatus = "finished";
-        this.io.to(this.gameId).emit("game-finished");
-        this.io.to(this.gameId).emit("players", this.players);
-      }, 70000);
+      // setTimeout(() => {
+      //   this.gameStatus = "finished";
+      //   this.io.to(this.gameId).emit("game-finished");
+      //   this.io.to(this.gameId).emit("players", this.players);
+      // }, 70000);
     });
 
-    socket.on("start-timer",(timer:number)=>{
-      console.log("start timer is",timer)
+    socket.on("finish-game", () => {
+      console.log("HEre");
+      this.gameStatus === "finished";
+      this.io.to(this.gameId).emit("game-finished");
+      this.io.to(this.gameId).emit("players", this.players);
+    });
 
-        this.io.to(this.gameId).emit("time-left",timer,true)
+    socket.on("count-down", (countDown: number) => {
+      console.log("start time is", countDown);
+      if (this.gameStatus === "finished") return;
 
-    })
+      const countDownTimer = setInterval(() => {
+        this.io.to(this.gameId).emit("counting-down", (countDown -= 1));
 
-    socket.on("typed-errors",(errors:number)=>{
-      console.log("Errors are",errors)
+        if (countDown === 0) {
+          clearInterval(countDownTimer);
+        }
+      }, 1000);
+    });
 
-      this.io.to(this.gameId).emit("recieved-errors",errors)
-    })
+    socket.on("game-timer", (gamingTimer: number) => {
+      console.log("ITS HERE");
+      if (this.gameStatus === "finished") return;
 
-    socket.on("game-timer",(gameTimer:number)=>{
-      console.log("ITS HERE")
-      console.log("game timer is",gameTimer)
+      const gameInterval = setInterval(() => {
+        console.log("game timer is", gamingTimer);
+        this.io.to(this.gameId).emit("gaming-left", (gamingTimer -= 1));
 
-        this.io.to(this.gameId).emit("gaming-left",gameTimer)
+        if (gamingTimer === 0) {
+          clearInterval(gameInterval);
+        }
+      }, 1000);
+    });
 
-    })
+    socket.on("typed-errors", (errors: number, id: string) => {
+      console.log("Errors are", errors, "from", id);
+
+      this.io.to(id).emit("recieved-errors", errors);
+    });
 
     socket.on("player-typed", (typed: string) => {
       console.log(typed);
@@ -83,13 +101,11 @@ export class Game {
         player.score++;
         const wpm = calculateWPM(player.score);
         player.wpm = wpm;
-        this.io
-          .to(this.gameId)
-          .emit("player-score", {
-            id: socket.id,
-            score: player.score,
-            wpm: player.wpm,
-          });
+        this.io.to(this.gameId).emit("player-score", {
+          id: socket.id,
+          score: player.score,
+          wpm: player.wpm,
+        });
 
         const otherPlayer = this.players.find((p) => p.id !== socket.id);
         if (otherPlayer) {

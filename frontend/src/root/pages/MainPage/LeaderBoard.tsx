@@ -26,6 +26,8 @@ export default function LeaderBoard() {
               <TableHead className="w-[80px]">Rank</TableHead>
               <TableHead>Name</TableHead>
               <TableHead>WPM</TableHead>
+              <TableHead className="text-center">Accuracy (%)</TableHead>
+              <TableHead className="text-center">Total characters typed</TableHead>
               <TableHead className="text-center">Total games played</TableHead>
               <TableHead className="text-center">Total games won</TableHead>
             </TableRow>
@@ -43,6 +45,8 @@ export default function LeaderBoard() {
                   <TableCell className="font-medium">{index + 1}</TableCell>
                   <TableCell>{player.userName}</TableCell>
                   <TableCell>{player.wpm}</TableCell>
+                  <TableCell className="text-center">{player.accuracy}</TableCell>
+                  <TableCell className="text-center">{player.totalTyped}</TableCell>
                   <TableCell className="text-center">{player.totalGames}</TableCell>
                   <TableCell className="text-center">{player.gamesWon}</TableCell>
                 </TableRow>

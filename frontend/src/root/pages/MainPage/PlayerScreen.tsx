@@ -1,5 +1,5 @@
 import { GameProps } from "@/types";
-import TypingParagraph from "../components/Game/TypingParagraph";
+import TypingParagraph from "../../components/Game/TypingParagraph";
 
 
 const PlayerScreen = ({

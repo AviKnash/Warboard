@@ -16,10 +16,9 @@ const useSocket = () => {
   const [host, setHost] = useState<string>("");
   const [serverConnected, setServerConnected] = useState<boolean>(false);
   const { currentUser } = useUserContext();
-  const [timer, setTimer] = useState(0);
-  const [gameTimer, setGameTimer] = useState(0);
-  const [popScreen, setPopScreen] = useState(false);
+  const [gamingTimer, setGamingTimer] = useState<number | null>(null);
   const [typingErrors, setTypingErrors] = useState(0);
+  const [countDown, setCountDown] = useState<number | null>(null);
 
   const userName = currentUser ? currentUser.displayName : name;
 
@@ -56,22 +55,16 @@ const useSocket = () => {
       setServerConnected(true);
     });
 
-    socket.on("time-left", (timer: number, popOver) => {
-      setPopScreen(popOver);
-      setTimer(timer);
-      if (timer === 1) {
-        setTimeout(() => {
-          setPopScreen(false);
-        }, 1000);
-      }
+    socket.on("counting-down", (count: number) => {
+      setCountDown(count);
     });
 
     socket.on("recieved-errors", (errors: number) => {
       setTypingErrors(errors);
     });
 
-    socket.on("gaming-left", (gameTimer: number) => {
-      setGameTimer(gameTimer);
+    socket.on("gaming-left", (gamingTimer: number) => {
+      setGamingTimer(gamingTimer);
     });
 
     socket.on("players", (players: Player[]) => {
@@ -130,7 +123,6 @@ const useSocket = () => {
     socket.off("game-finished");
     socket.off("new-host");
     socket.off("error");
-    socket.off("time-left");
   }
 
   const currentPlayer = players.find((player) => player.id === ioInstance?.id);
@@ -146,10 +138,9 @@ const useSocket = () => {
     serverConnected,
     currentPlayer,
     enemyPlayer,
-    timer,
-    popScreen,
-    gameTimer,
-    typingErrors
+    gamingTimer,
+    typingErrors,
+    countDown,
   };
 };
 

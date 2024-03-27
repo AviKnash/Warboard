@@ -1,19 +1,27 @@
 import { useEffect } from "react";
-import LoseScreen from "./GameOver/LoseScreen";
-import WinScreen from "./GameOver/WinScreen";
+import LoseScreen from "../GameOver/LoseScreen";
+import WinScreen from "../GameOver/WinScreen";
 import { useGame } from "@/hooks/useGame";
 import { useUserContext } from "@/context/AuthContext";
 import { useGetUser } from "@/hooks/useGetUser";
+import { calculateAccuracyPercentage } from "@/lib/utils";
 
 export function GameFinishedScreen({
   currentPlayerHasHigherScore,
   wpm,
   userLoggedIn,
+  typingErrors,
+  totalTyped,
 }: {
   currentPlayerHasHigherScore: boolean | undefined;
   wpm: number | undefined;
   userLoggedIn: boolean | undefined;
+  typingErrors: number;
+  totalTyped: number | undefined;
 }) {
+  const accuracy = Math.round(
+    calculateAccuracyPercentage(typingErrors, totalTyped)
+  );
 
   if (userLoggedIn) {
     const { addGame, addUserStats } = useGame();
@@ -27,7 +35,7 @@ export function GameFinishedScreen({
           ? user.gamesWon + 1
           : user.gamesWon;
 
-        addGame({ wpm });
+        addGame({ wpm, totalTyped, accuracy });
         addUserStats({
           totalGames: userNewTotalGames,
           gamesWon: userNewGamesWon,
@@ -43,9 +51,9 @@ export function GameFinishedScreen({
   return (
     <>
       {currentPlayerHasHigherScore ? (
-        <WinScreen wpm={wpm} restartPage={restartPage} />
+        <WinScreen accuracy={accuracy} typingErrors={typingErrors} totalTyped={totalTyped} wpm={wpm} restartPage={restartPage} />
       ) : (
-        <LoseScreen wpm={wpm} restartPage={restartPage} />
+        <LoseScreen accuracy={accuracy} typingErrors={typingErrors} totalTyped={totalTyped} wpm={wpm} restartPage={restartPage} />
       )}
     </>
   );

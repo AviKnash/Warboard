@@ -32,8 +32,8 @@ const UserStatsPopup = () => {
       <div >
         <div className="flex items-center">
           <div className="w-full p-4">
-            <h3 className="w-full text-sm text-end p-4 border-b border-t">Total Games Played - [ {currentUser?.totalGames} ]</h3>
-            <h3 className="w-full text-sm text-end p-4 border-b border-t">Total Games Won - [ {currentUser?.gamesWon} ]</h3>
+            <h3 className="w-full text-sm text-end p-4 border-b border-t">Total Games Played - {currentUser?.totalGames}</h3>
+            <h3 className="w-full text-sm text-end p-4 border-b border-t">Total Games Won - {currentUser?.gamesWon}</h3>
           </div>
         </div>
       </div>

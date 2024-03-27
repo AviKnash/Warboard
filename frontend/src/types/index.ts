@@ -60,7 +60,6 @@ export type GameProps = {
   gameStatus: string;
   ioInstance: Socket | undefined;
   paragraph: string;
-  setTimeLeft: React.Dispatch<React.SetStateAction<number | null>>;
   typingErrors:number;
 };
 

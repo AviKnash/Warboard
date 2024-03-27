@@ -13,11 +13,13 @@ export const useGame = () => {
   const { currentUser } = useUserContext();
   const userDocument = currentUser && doc(db, "user", currentUser.userID);
 
-  const addGame = async ({ wpm }: { wpm: number | undefined }) => {
+  const addGame = async ({ wpm,totalTyped,accuracy }: { wpm: number | undefined,totalTyped:number | undefined,accuracy:number }) => {
     await addDoc(gameCollection, {
       userID: currentUser?.userID,
       userName: currentUser?.displayName,
       wpm,
+      totalTyped,
+      accuracy,
       playedAt: serverTimestamp(),
     });
   };

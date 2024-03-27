@@ -17,6 +17,8 @@ interface Game {
   userID: string;
   wpm: number;
   userName: string;
+  totalTyped: number;
+  accuracy: number;
 }
 
 export const useGetLeaderBoard = () => {
@@ -47,6 +49,8 @@ export const useGetLeaderBoard = () => {
             playedAt: data.playedAt,
             gamesWon: userFromDB?.gamesWon | 0,
             totalGames: userFromDB?.totalGames | 0,
+            accuracy: data.accuracy,
+            totalTyped: data.totalTyped,
             userID: data.userID,
             wpm: data.wpm,
           };

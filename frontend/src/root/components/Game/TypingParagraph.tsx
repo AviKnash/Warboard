@@ -26,7 +26,7 @@ const TypingParagraph: React.FC<TypingParagraphProps> = ({
       if (!ioInstance) return;
       ioInstance.emit("player-typed", event.key);
     } else {
-      ioInstance?.emit("typed-errors", (typingErrors += 1));
+      ioInstance?.emit("typed-errors", (typingErrors += 1),ioInstance.id);
     }
   };
 

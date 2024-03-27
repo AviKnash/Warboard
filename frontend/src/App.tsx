@@ -1,11 +1,11 @@
 import "./globals.css";
 import { Routes, Route } from "react-router-dom";
 import RootLayout from "./root/RootLayout";
-import Home from "./root/pages/Home";
+import Home from "./root/pages/MainPage/Home";
 import AuthLayout from "./auth/AuthLayout";
 import StartGame from "./auth/components/StartGame";
 import { Toaster } from "./components/ui/toaster";
-import LeaderBoard from "./root/pages/LeaderBoard";
+import LeaderBoard from "./root/pages/MainPage/LeaderBoard";
 import Practice from "./root/pages/Practice/Practice";
 
 

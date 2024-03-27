@@ -1,4 +1,4 @@
-import EnemyTypingParagraph from "../components/Game/EnemyTypingParagraph";
+import EnemyTypingParagraph from "../../components/Game/EnemyTypingParagraph";
 import { EnemyGameProps } from "@/types";
 
 
