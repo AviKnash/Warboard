@@ -3,6 +3,14 @@ export const isKeyboardCodeAllowed = (code: string) => {
       code.startsWith("Key") ||
       code.startsWith("Digit") ||
       code === "Backspace" ||
-      code === "Space"
+      code === "Space" ||
+      code === "Comma" ||
+      code === "Minus" ||
+      code === "Period" ||
+      code === "Slash" ||
+      code === "Backquote" ||
+      code === "Quote" ||
+      code.startsWith("Backquote")
+
     );
   };
