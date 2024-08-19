@@ -2,17 +2,16 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const FullSpinner = () => {
   return (
-    <div className="grid grid-cols-1 justify-items-center w-full h-screen items-center">
-      <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+    <div className="flex-col h-full">
+      <div className="h-1/2 flex items-center justify-center">
+        <Skeleton className="h-[20rem] w-[20rem] rounded-xl" />
+      </div>
       <div className="grid grid-cols-2">
         <div className="p-4">
-
-        <Skeleton className="h-[125px] w-[250px] rounded-xl" />
-        <Skeleton className="h-4 w-[200px]" />
+          <Skeleton className="h-[10rem] w-[30rem] rounded-xl" />
         </div>
         <div className="p-4">
-        <Skeleton className="h-[125px] w-[250px] rounded-xl" />
-        <Skeleton className="h-4 w-[200px]" />
+          <Skeleton className="h-[10rem] w-[30rem] rounded-xl" />
         </div>
       </div>
     </div>

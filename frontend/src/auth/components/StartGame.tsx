@@ -2,7 +2,7 @@ import { useUserContext } from "@/context/AuthContext";
 import CreateGame from "../CreateGame";
 import JoinGame from "../JoinGame";
 import SignIn from "../SignIn";
-import logo from "/warboard.png";
+import logo from "/warboard.svg";
 import LoggedInUser from "./LoggedInUser";
 import FullSpinner from "./FullSpinner";
 
@@ -16,7 +16,7 @@ const StartGame = () => {
       ) : (
         <div className="grid grid-cols-1 justify-items-center items-center">
           <div className="grid grid-col-1">
-            <img draggable={false} src={logo} className="h-36 p-5" />
+            <img draggable={false} src={logo} className="h-64 p-5" />
           </div>
           {userLoggedIn && !isLoading && (
             <div className="grid grid-col-1 mt-5">

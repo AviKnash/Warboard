@@ -2831,7 +2831,9 @@
   .typed {
     @apply text-violet-900;
   }
-
+  .shadow {
+    @apply shadow-slate-800 shadow-sm;
+  }
   .current {
     @apply bg-slate-400;
   }
