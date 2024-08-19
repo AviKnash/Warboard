@@ -29,12 +29,12 @@ const JoinGame = () => {
       if (!inviteCode) {
         return toast({ title: "Invite Code is required" });
       }
-      return navigate(`/home/${inviteCode}/${currentUser?.displayName}`);
+      return navigate(`/${inviteCode}/${currentUser?.displayName}`);
     }
     if (!inviteCode || !name)
       return toast({ title: "Invite Code and Name are both required" });
 
-    navigate(`/home/${inviteCode}/${name}`);
+    navigate(`/${inviteCode}/${name}`);
   };
 
   return (

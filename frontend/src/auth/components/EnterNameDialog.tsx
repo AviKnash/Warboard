@@ -30,7 +30,7 @@ export function EnterNameDialog() {
       return toast({ title: "Name is required!" });
     }
     const inviteCode = uuidv4();
-    return navigate(`/home/${inviteCode}/${name}`);
+    return navigate(`/${inviteCode}/${name}`);
   };
 
   return (

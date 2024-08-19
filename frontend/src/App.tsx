@@ -15,14 +15,14 @@ const App = () => {
       <Routes>
         {/* public */}
         <Route element={<AuthLayout />}>
-          <Route path="/start-game" element={<StartGame />} />
-          <Route path="/start-game/leaderboard" element={<LeaderBoard />} />
+          <Route path="/" element={<StartGame />} />
+          <Route path="/leaderboard" element={<LeaderBoard />} />
         </Route>
 
         {/* private */}
         <Route element={<RootLayout />}>
-          <Route index path="home/:inviteCode/:name" element={<Home />} />
-          <Route path="home/practice" element={<Practice />} />
+          <Route index path="/:inviteCode/:name" element={<Home />} />
+          <Route path="/practice" element={<Practice />} />
         </Route>
       </Routes>
       <Toaster />

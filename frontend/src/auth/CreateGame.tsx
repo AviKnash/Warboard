@@ -19,11 +19,11 @@ const CreateGame = () => {
   console.log(currentUser,userLoggedIn)
   const createGame = () => {
     const inviteCode = uuidv4();
-    return navigate(`/home/${inviteCode}/${currentUser?.displayName}`);
+    return navigate(`/${inviteCode}/${currentUser?.displayName}`);
   };
 
   const createSinglePlayerGame = ()=>{
-    return navigate(`/home/practice`)
+    return navigate(`/practice`)
   }
 
   return (

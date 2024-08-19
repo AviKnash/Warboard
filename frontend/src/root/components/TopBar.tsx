@@ -4,8 +4,8 @@ import { useUserContext } from "@/context/AuthContext";
 
 const TopBar = () => {
   const { userLoggedIn, currentUser } = useUserContext();
-  const homeLink = `/start-game`;
-  const leaderboardLink = `/start-game/leaderboard`;
+  const homeLink = `/`;
+  const leaderboardLink = `/leaderboard`;
 
   return (
     <nav className="flex justify-between shadow h-16 p-1">
