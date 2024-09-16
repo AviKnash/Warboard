@@ -11,10 +11,9 @@ import { Card } from "@/components/ui/card";
 
 export default function LeaderBoard() {
   const { leaderBoard, loading } = useGetLeaderBoard();
-  console.log(leaderBoard);
 
   return (
-    <div className="flex flex-col w-full h-full items-center">
+    <div className="flex flex-col w-full h-full items-center overflow-scroll">
       <h1 className="text-2xl font-bold text-center mb-4 p-2">Leaderboard</h1>
       <h2 className="text-lg text-gray-600 text-center mb-8">
         Check out our top performers!

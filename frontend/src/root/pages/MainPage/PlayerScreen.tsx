@@ -19,7 +19,7 @@ const PlayerScreen = ({
         </div>
       ) : (
         <>
-          <div className="flex-grow">
+          <div className="flex-grow border h-full">
             <TypingParagraph typingErrors={typingErrors} ioInstance={ioInstance} paragraph={paragraph} />
           </div>
         </>

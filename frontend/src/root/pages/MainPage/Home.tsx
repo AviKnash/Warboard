@@ -57,7 +57,6 @@ const GamePage = () => {
     }
   }, [gamingTimer]);
 
-  console.log(countDown);
   useEffect(() => {
     if (countDown && countDown > 0) {
       setPopScreen(true);

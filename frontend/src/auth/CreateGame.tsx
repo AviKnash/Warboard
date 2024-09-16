@@ -1,50 +1,64 @@
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { EnterNameDialog } from "./components/EnterNameDialog";
-import { Button } from "@/components/ui/button";
 import { useUserContext } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
+import CommonButton from "@/components/common/CommonButton";
+import CommonCard from "@/components/common/CommonCard";
+
+interface CardFooterProps {
+  userLoggedIn: boolean;
+  createGame: () => void;
+  createSinglePlayerGame: () => void;
+}
 
 const CreateGame = () => {
   const navigate = useNavigate();
 
   const { currentUser, userLoggedIn } = useUserContext();
 
-  console.log(currentUser,userLoggedIn)
   const createGame = () => {
     const inviteCode = uuidv4();
     return navigate(`/${inviteCode}/${currentUser?.displayName}`);
   };
 
-  const createSinglePlayerGame = ()=>{
-    return navigate(`/practice`)
-  }
+  const createSinglePlayerGame = () => {
+    return navigate(`/practice`);
+  };
+
+  const CardFooter: React.FC<CardFooterProps> = ({
+    userLoggedIn,
+    createGame,
+    createSinglePlayerGame,
+  }) => {
+    return (
+      <div className="flex justify-center mt-auto">
+        {userLoggedIn ? (
+          <CommonButton className="mx-2" onClick={createGame}>
+            Multiplayer Battle
+          </CommonButton>
+        ) : (
+          <EnterNameDialog />
+        )}
+        <CommonButton className="mx-2" onClick={createSinglePlayerGame}>
+          Practice Singleplayer
+        </CommonButton>
+      </div>
+    );
+  };
 
   return (
-    <Card className="flex-1 rounded-lg m-4 shadow-md flex flex-col">
-      <CardHeader>
-        <CardTitle>Create a game!</CardTitle>
-      </CardHeader>
-      <CardContent className="flex-grow">
-        <p>Click to make a room and share the code to battle it out!!</p>
-      </CardContent>
-      <CardFooter className="flex justify-center mt-auto">
-        {userLoggedIn ? (
-          <Button className="m-2" onClick={createGame}>Multiplayer Battle</Button>
-          ) : (
-
-            <EnterNameDialog />
-  
-        )}
-        <Button onClick={createSinglePlayerGame} className="m-2">Practice Singleplayer</Button>
-      </CardFooter>
-    </Card>
+    <CommonCard
+      footerContent={
+        <CardFooter
+          userLoggedIn={userLoggedIn}
+          createGame={createGame}
+          createSinglePlayerGame={createSinglePlayerGame}
+        />
+      }
+      title="Create a game!"
+    >
+      <p>Click to make a room and share the code to battle it out!!</p>
+    </CommonCard>
   );
 };
 

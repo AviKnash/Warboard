@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
 
-interface TypingParagraphProps {
+interface ITypingParagraph {
   paragraph: string;
   ioInstance: Socket | undefined;
   typingErrors: number;
 }
 
-const TypingParagraph: React.FC<TypingParagraphProps> = ({
+const TypingParagraph: React.FC<ITypingParagraph> = ({
   paragraph,
   ioInstance,
   typingErrors,
@@ -60,8 +60,7 @@ const TypingParagraph: React.FC<TypingParagraphProps> = ({
       </>
     );
   };
-
-  return <div>{paragraph && paragraph.split("").map(renderLetter)}</div>;
+  return <div className="border border-white h-full">{paragraph && paragraph.split("").map(renderLetter)}</div>;
 };
 
 export default TypingParagraph;
