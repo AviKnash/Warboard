@@ -24,4 +24,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
+
+    - name: Install dependancies
+      run: npm ci
+      working-directory: ./backend
