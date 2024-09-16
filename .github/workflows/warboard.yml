@@ -27,4 +27,4 @@ jobs:
 
     - name: Install dependancies
       run: npm ci
-      working-directory: ./backend
+      working-directory: ./Warboard/backend
