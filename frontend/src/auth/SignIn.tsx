@@ -1,10 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import CommonCard from "@/components/common/CommonCard";
 import { useUser } from "@/hooks/useUser";
 import GoogleButton from "react-google-button";
 
@@ -20,19 +14,16 @@ const SignIn = () => {
   };
 
   return (
-    <Card className="flex-1 rounded-lg m-4 shadow-md flex flex-col">
-      <CardHeader>
-        <CardTitle>Do you have an account or want to login?</CardTitle>
-      </CardHeader>
-      <CardContent className="flex-grow">
-        <p>Login using your Google account!</p>
-      </CardContent>
-      <CardFooter className="flex justify-center mt-auto">
+    <CommonCard
+      title="Do you have an account or want to login?"
+      footerContent={
         <GoogleButton label="Sign In" onClick={signIn}>
           Create game
         </GoogleButton>
-      </CardFooter>
-    </Card>
+      }
+    >
+      <p>Login using your Google account!</p>
+    </CommonCard>
   );
 };
 

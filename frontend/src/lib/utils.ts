@@ -17,11 +17,11 @@ export const userComments = [
   {
     name: "Sanduni Wijerathne",
     title: "Bunny",
-    description: "Just get better, idiot.",
+    description: "Make sure to check for bad typing habit's. such as resorting to only two finger's while trying to type faster.",
     imageUrl: pikachu,
   },
   {
-    name: "John Smith",
+    name: "Callum Smith",
     title: "Speedy Typer",
     description:
       "Practice touch typing regularly to improve your typing speed. Focus on accuracy first, speed will come with practice.",

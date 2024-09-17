@@ -8,13 +8,12 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { FormEvent } from "react";
 import {  useToast } from "@/components/ui/use-toast";
+import CommonButton from "@/components/common/CommonButton";
 
 
 export function EnterNameDialog() {
@@ -36,14 +35,13 @@ export function EnterNameDialog() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button>Start Game</Button>
+        <CommonButton>Start Game</CommonButton>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Please enter your name.</AlertDialogTitle>
         </AlertDialogHeader>
         <form onSubmit={createGame}>
-          <Label htmlFor="name">Name</Label>
           <Input type="text" placeholder="Enter your name here" name="name" />
           <AlertDialogFooter className="m-4">
             <AlertDialogCancel>Cancel</AlertDialogCancel>

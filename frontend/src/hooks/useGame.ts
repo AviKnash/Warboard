@@ -19,7 +19,7 @@ export const useGame = () => {
       userName: currentUser?.displayName,
       wpm,
       totalTyped,
-      accuracy,
+      accuracy: accuracy > 0 ? accuracy : 0,
       playedAt: serverTimestamp(),
     });
   };
@@ -31,8 +31,6 @@ export const useGame = () => {
     totalGames: number;
     gamesWon: number;
   }) => {
-    console.log(totalGames, gamesWon);
-
     if (userDocument) {
       await updateDoc(userDocument, {
         totalGames,

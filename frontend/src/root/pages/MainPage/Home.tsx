@@ -57,7 +57,6 @@ const GamePage = () => {
     }
   }, [gamingTimer]);
 
-  console.log(countDown);
   useEffect(() => {
     if (countDown && countDown > 0) {
       setPopScreen(true);
@@ -78,8 +77,9 @@ const GamePage = () => {
     }, 5000);
   }
 
-  const renderGameContent = () => {
-    if (!serverConnected) {
+  const Game = () => {
+
+    if (!serverConnected || !currentPlayer) {
       return <Loading />;
     }
 
@@ -164,7 +164,7 @@ const GamePage = () => {
     );
   };
 
-  return <div className="w-3/4 flex flex-row h-2/3">{renderGameContent()}</div>;
+  return <div className="w-3/4 flex flex-row h-2/3"><Game /></div>;
 };
 
 export default GamePage;
