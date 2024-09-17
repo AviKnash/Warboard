@@ -60,7 +60,7 @@ const TypingParagraph: React.FC<ITypingParagraph> = ({
       </>
     );
   };
-  return <div className="border border-white h-full">{paragraph && paragraph.split("").map(renderLetter)}</div>;
+  return <div className="h-full">{paragraph && paragraph.split("").map(renderLetter)}</div>;
 };
 
 export default TypingParagraph;

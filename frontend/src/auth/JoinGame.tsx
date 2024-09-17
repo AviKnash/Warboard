@@ -1,5 +1,4 @@
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { FormEvent, useRef } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
@@ -47,12 +46,10 @@ const JoinGame = () => {
     >
       <form ref={formRef} onSubmit={joinGame}>
         <div className="grid w-full items-center gap-4">
-          <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="code">Room Id</Label>
-            <Input type="text" placeholder="eg: 12345" name="inviteCode" />
+          <div className="flex flex-col space-y-3">
+            <Input type="text" placeholder="Enter your invite code here" name="inviteCode" />
             {!userLoggedIn && (
               <>
-                <Label htmlFor="name">Name</Label>
                 <Input type="text" placeholder="Enter name here" name="name" />
               </>
             )}

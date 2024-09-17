@@ -24,8 +24,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Install dependancies
-      run: npm ci
+    - name: Install dependancies and build
+      run: |
+        npm ci
+        npm run build
       working-directory: ./backend
 
     - name: Restart pm2

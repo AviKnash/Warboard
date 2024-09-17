@@ -8,23 +8,27 @@ export interface CommonButtonProps extends React.ButtonHTMLAttributes<HTMLButton
   children: React.ReactNode;
   className?: string;
   isLoading?: boolean;
-  type?:"submit" | "reset" | "button" | undefined;
+  type?: "submit" | "reset" | "button";
 }
 
-const CommonButton: React.FC<CommonButtonProps> = ({
-  variant = 'default',
-  size = 'default',
-  children,
-  className,
-  type,
-  isLoading = false,
-  ...props
-}) => {
+const CommonButton = React.forwardRef<HTMLButtonElement, CommonButtonProps>((
+  {
+    variant = 'default',
+    size = 'default',
+    children,
+    className,
+    type = 'button',
+    isLoading = false,
+    ...props
+  },
+  ref
+) => {
   return (
     <Button
       variant={variant}
       size={size}
       type={type}
+      ref={ref} 
       className={cn(
         "transition-all duration-200",
         {
@@ -48,6 +52,8 @@ const CommonButton: React.FC<CommonButtonProps> = ({
       ) : children}
     </Button>
   );
-};
+});
+
+CommonButton.displayName = 'CommonButton';
 
 export default CommonButton;
