@@ -41,17 +41,10 @@ export class Game {
       const paragraph = await generateParagraph();
       this.paragraph = paragraph;
       this.io.to(this.gameId).emit("game-started", paragraph);
-
-      // setTimeout(() => {
-      //   this.gameStatus = "finished";
-      //   this.io.to(this.gameId).emit("game-finished");
-      //   this.io.to(this.gameId).emit("players", this.players);
-      // }, 70000);
     });
 
     socket.on("finish-game", () => {
-      console.log("HEre");
-      this.gameStatus === "finished";
+      this.gameStatus = "finished";
       this.io.to(this.gameId).emit("game-finished");
       this.io.to(this.gameId).emit("players", this.players);
     });
@@ -70,16 +63,15 @@ export class Game {
     });
 
     socket.on("game-timer", (gamingTimer: number) => {
-      console.log("ITS HERE");
+
       if (this.gameStatus === "finished") return;
 
       const gameInterval = setInterval(() => {
         console.log("game timer is", gamingTimer);
-        this.io.to(this.gameId).emit("gaming-left", (gamingTimer -= 1));
-
-        if (gamingTimer === 0) {
+        if (gamingTimer === 0 || this.gameStatus === "finished") {
           clearInterval(gameInterval);
         }
+        this.io.to(this.gameId).emit("gaming-left", (gamingTimer -= 1));
       }, 1000);
     });
 
@@ -97,7 +89,6 @@ export class Game {
       const player = this.players.find((player) => player.id === socket.id);
 
       if (player) {
-        const paragraphLength = this.paragraph.length;
         player.score++;
         const wpm = calculateWPM(player.score);
         player.wpm = wpm;
