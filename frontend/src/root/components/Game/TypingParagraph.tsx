@@ -5,12 +5,14 @@ interface ITypingParagraph {
   paragraph: string;
   ioInstance: Socket | undefined;
   typingErrors: number;
+  className?: string
 }
 
 const TypingParagraph: React.FC<ITypingParagraph> = ({
   paragraph,
   ioInstance,
   typingErrors,
+  className,
 }) => {
   const [currentPosition, setCurrentPosition] = useState(0);
   const [isCurrentVisible, setIsCurrentVisible] = useState(true);
@@ -20,6 +22,7 @@ const TypingParagraph: React.FC<ITypingParagraph> = ({
   };
 
   const handleKeyDown = (event: KeyboardEvent) => {
+    if(event.key === "Shift") return;
     if (event.key === paragraph[currentPosition]) {
       setCurrentPosition((prev) => Math.min(prev + 1, paragraph.length - 1));
 
@@ -60,7 +63,7 @@ const TypingParagraph: React.FC<ITypingParagraph> = ({
       </>
     );
   };
-  return <div className="h-full">{paragraph && paragraph.split("").map(renderLetter)}</div>;
+  return <div className={`h-full ${className}`}>{paragraph && paragraph.split("").map(renderLetter)}</div>;
 };
 
 export default TypingParagraph;

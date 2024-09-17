@@ -77,6 +77,8 @@ const useSocket = () => {
     });
 
     socket.on("player-left", (id: string) => {
+      socket.emit("finish-game")
+      toast({ title: "Enemy player left the game!" });
       setPlayers((prev) => prev.filter((player) => player.id !== id));
     });
 

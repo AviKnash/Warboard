@@ -46,13 +46,15 @@ const GamePage = () => {
   });
 
   useEffect(() => {
-    setCurrentPlayerHasHigherScore(
-      currentPlayer && enemyPlayer && currentPlayer.score > enemyPlayer.score
-    );
+    if((currentPlayer && enemyPlayer && currentPlayer.score >= enemyPlayer.score) || !enemyPlayer) {
+      setCurrentPlayerHasHigherScore(true)
+    } else {
+      setCurrentPlayerHasHigherScore(false)
+    }
   }, [gamingTimer]);
 
   useEffect(() => {
-    if (gamingTimer === 0) {
+    if (gamingTimer === 0 && players.length > 1) {
       ioInstance?.emit("finish-game");
     }
   }, [gamingTimer]);
@@ -72,12 +74,14 @@ const GamePage = () => {
 
     ioInstance.emit("count-down", 6);
     setTimeout(() => {
-      ioInstance.emit("game-timer", +data.type);
+      // ioInstance.emit("game-timer", +data.type);
+      ioInstance.emit("game-timer", +177777777777);
+
       ioInstance.emit("start-game");
     }, 5000);
   }
 
-  const Game = () => {
+  const renderGame = () => {
 
     if (!serverConnected || !currentPlayer) {
       return <Loading />;
@@ -112,6 +116,7 @@ const GamePage = () => {
               gameStatus={gameStatus}
               paragraph={paragraph}
               typingErrors={typingErrors}
+              
             />
             <div className="flex items-center justify-center text-white text-6xl font-semibold italic">
               <h1>{gamingTimer}</h1>
@@ -164,7 +169,7 @@ const GamePage = () => {
     );
   };
 
-  return <div className="w-3/4 flex flex-row h-2/3"><Game /></div>;
+  return <div className="w-3/4 flex flex-row h-2/3">{renderGame()}</div>;
 };
 
 export default GamePage;
