@@ -1,5 +1,5 @@
 import "./globals.css";
-import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import RootLayout from "./root/RootLayout";
 import Home from "./root/pages/MainPage/Home";
 import AuthLayout from "./auth/AuthLayout";
