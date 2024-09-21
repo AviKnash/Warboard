@@ -3,7 +3,7 @@ import TypingParagraph from "../../components/Game/TypingParagraph";
 import { useState } from "react";
 import WorkerBot from "./WorkerBot";
 import WarbyAttackSide from '/WarbyAttackSide.gif'
-import IcyFloor from '/IcyFloor.png'
+import IcyFloor from '/IcyFloorFlat.png'
 import { truncate } from "@/lib/utils";
 
 

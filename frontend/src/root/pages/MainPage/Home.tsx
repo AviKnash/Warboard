@@ -1,9 +1,4 @@
-import {
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useUserContext } from "@/context/AuthContext";
 import { GameFinishedScreen } from "./GameFinishedScreen";
 import useSocket from "@/hooks/useSocket";
@@ -21,8 +16,6 @@ import GamingTimer, { TimerRef } from "@/root/components/Game/GamingTimer";
 import IceFlooring from "./IceFlooring";
 import VSBackdrop from "./VSBackdrop";
 
-
-
 const GamePage = () => {
   const {
     players,
@@ -37,7 +30,7 @@ const GamePage = () => {
     gamingTimer,
     typingErrors,
     countDown,
-    enemyParagraph
+    enemyParagraph,
   } = useSocket();
   const { userLoggedIn } = useUserContext();
   const [popScreen, setPopScreen] = useState<boolean>(false);
@@ -45,7 +38,6 @@ const GamePage = () => {
     useState<boolean | undefined>(true);
   const [timeFormOpen, setTimeFormOpen] = useState<boolean>(true);
   const timerRef = useRef<TimerRef>(null);
-
 
   const FormSchema = z.object({
     type: z.enum(["10", "30", "60"], {
@@ -72,7 +64,7 @@ const GamePage = () => {
 
   useEffect(() => {
     if (!gamingTimer) return;
-    
+
     if (timerRef.current) {
       timerRef.current.updateTime(gamingTimer);
     }
@@ -101,7 +93,6 @@ const GamePage = () => {
       ioInstance.emit("start-game");
     }, 5000);
   }
-
 
   const renderGame = useMemo(() => {
     if (!serverConnected || !currentPlayer) {
@@ -187,7 +178,7 @@ const GamePage = () => {
               />
             </div>
             <VSBackdrop />
-              <IceFlooring />
+            <IceFlooring />
           </div>
         )}
       </>
@@ -201,7 +192,7 @@ const GamePage = () => {
     countDown,
     enemyPlayer,
     paragraph,
-    enemyParagraph
+    enemyParagraph,
   ]);
 
   return <div className="w-3/4 flex flex-row h-2/3">{renderGame}</div>;
