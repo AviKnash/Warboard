@@ -1,4 +1,4 @@
-#  [**Warboard**](www.warboard.live) 🖥️🎮
+#  [**Warboard**](https://www.warboard.live) 🖥️🎮
 
 **Warboard** is an exciting pixel-art inspired, real-time multiplayer typing battle game right on your browser! Here you can challenge friends and foes to intense typing duels. Put your typing skills to the test and see who can type the fastest while improving your typing skills ten-fold!
 
