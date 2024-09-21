@@ -9,7 +9,6 @@ const TopBar = ({ leaderboardRequired }: ITopBar) => {
   const { userLoggedIn, currentUser } = useUserContext();
   const homeLink = `/`;
   const leaderboardLink = `/leaderboard`;
-  console.log("LEADERR",leaderboardRequired)
 
   return (
     <nav className="flex justify-between shadow h-16 p-1 sticky top-0 w-full z-99">

@@ -1,6 +1,5 @@
-export function calculateWPM(score: number) {
-    const wpm = score / 5;
-  
-    return wpm;
-  }
-  
+export function calculateWPM(score: number, time: number) {
+  const wpm = (score / time) * 60;
+
+  return wpm;
+}

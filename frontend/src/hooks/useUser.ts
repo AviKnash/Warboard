@@ -39,7 +39,6 @@ export const useUser = () => {
             gamesWon: data.gamesWon,
             userID: data.userID,
           };
-          console.log(doc.data());
           setUser(userData);
         });
 
@@ -58,7 +57,6 @@ export const useUser = () => {
   const addUser = async () => {
     try {
       const { user } = await doSignInWithGoogle();
-      console.log(user);
       if (user) {
         const { displayName, uid, email } = user;
 

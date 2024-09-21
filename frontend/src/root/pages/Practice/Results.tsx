@@ -19,7 +19,6 @@ const Results = ({
     className,
 }: IResultsProp) => {
 
-    console.log(state)
     const initial = { opacity: 0 };
     const animate = { opacity: 1 };
     const duration = { duration: 0.3 };

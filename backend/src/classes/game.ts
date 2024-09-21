@@ -10,6 +10,7 @@ export class Game {
   io: Server;
   gameHost: string;
   paragraph: string;
+  gamingTimer: number;
 
   constructor(id: string, io: Server, host: string) {
     this.gameId = id;
@@ -18,6 +19,7 @@ export class Game {
     this.gameStatus = "not-started";
     this.paragraph = "";
     this.players = [];
+    this.gamingTimer = 0;
   }
 
   setupListeners(socket: Socket) {
@@ -43,6 +45,22 @@ export class Game {
       this.io.to(this.gameId).emit("game-started", paragraph);
     });
 
+    socket.on("refetch-paragraph", async () => {
+      if (this.gameStatus !== "in-progress") {
+        return socket.emit("error", "There is not game!");
+      }
+
+      const newParagraph = await generateParagraph();
+      this.paragraph = newParagraph;
+
+      this.io.to(socket.id).emit("send-paragraph", newParagraph);
+      const otherPlayer = this.players.find((p) => p.id !== socket.id);
+
+      if (otherPlayer) {
+        this.io.to(otherPlayer.id).emit("send-enemy-paragraph", newParagraph);
+      }
+    });
+
     socket.on("finish-game", () => {
       this.gameStatus = "finished";
       this.io.to(this.gameId).emit("game-finished");
@@ -63,8 +81,8 @@ export class Game {
     });
 
     socket.on("game-timer", (gamingTimer: number) => {
-
       if (this.gameStatus === "finished") return;
+      this.gamingTimer = gamingTimer;
 
       const gameInterval = setInterval(() => {
         console.log("game timer is", gamingTimer);
@@ -82,15 +100,14 @@ export class Game {
     });
 
     socket.on("player-typed", (typed: string) => {
-      console.log(typed);
       if (this.gameStatus !== "in-progress")
         return socket.emit("error", "The game has not started here.");
 
       const player = this.players.find((player) => player.id === socket.id);
 
       if (player) {
-        player.score++;
-        const wpm = calculateWPM(player.score);
+        if (typed === " ") player.score++;
+        const wpm = calculateWPM(player.score, this.gamingTimer);
         player.wpm = wpm;
         this.io.to(this.gameId).emit("player-score", {
           id: socket.id,
