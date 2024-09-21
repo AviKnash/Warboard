@@ -25,17 +25,24 @@ const EnemyTypingParagraph: React.FC<EnemyTypingParagraphProps> = ({
     };
   }, [ioInstance]);
 
+  useEffect(() => {
+    if (paragraph.length -1 === enemyTypedLetters.length) {
+      setEnemyTypedLetters([])
+    }
+  }, [enemyTypedLetters,paragraph]);
+
+  
   const renderLetter = (letter: string, index: number) => {
     const isTyped = index < enemyTypedLetters.length;
 
     let className = "";
 
     if (isTyped) {
-      className = "typed";
+      className = "enemy-typed";
     }
 
     return (
-      <span key={index} className={className}>
+      <span style={{fontSize:"1.5rem"}} key={index} className={className}>
         {isTyped ? enemyTypedLetters[index] : letter}
       </span>
     );

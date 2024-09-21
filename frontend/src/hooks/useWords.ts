@@ -15,11 +15,9 @@ const useWords = () => {
   }, []);
 
   useEffect(() => {
-    console.log("ehhlo!")
     updateWords();
   }, [updateWords]);
 
-  console.log(words);
 
   return { words, updateWords };
 };

@@ -1,10 +1,14 @@
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useUserContext } from "@/context/AuthContext";
 import { GameFinishedScreen } from "./GameFinishedScreen";
 import useSocket from "@/hooks/useSocket";
 import Loading from "@/auth/components/Loading";
 import CountDown from "../../components/Game/CountDown";
-import Camper from "../../components/Game/UiComponents/SnowFloor";
 import { Snowfall } from "react-snowfall";
 import EnemyScreen from "./EnemyScreen";
 import PlayerScreen from "./PlayerScreen";
@@ -13,6 +17,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import HostGameTimeForm from "./HostGameTimeForm";
+import GamingTimer, { TimerRef } from "@/root/components/Game/GamingTimer";
+import IceFlooring from "./IceFlooring";
+import VSBackdrop from "./VSBackdrop";
+
+
 
 const GamePage = () => {
   const {
@@ -28,12 +37,15 @@ const GamePage = () => {
     gamingTimer,
     typingErrors,
     countDown,
+    enemyParagraph
   } = useSocket();
   const { userLoggedIn } = useUserContext();
   const [popScreen, setPopScreen] = useState<boolean>(false);
   const [currentPlayerHasHigherScore, setCurrentPlayerHasHigherScore] =
     useState<boolean | undefined>(true);
-    const [timeFormOpen,setTimeFormOpen] = useState<boolean>(true)
+  const [timeFormOpen, setTimeFormOpen] = useState<boolean>(true);
+  const timerRef = useRef<TimerRef>(null);
+
 
   const FormSchema = z.object({
     type: z.enum(["10", "30", "60"], {
@@ -46,18 +58,29 @@ const GamePage = () => {
   });
 
   useEffect(() => {
-    if((currentPlayer && enemyPlayer && currentPlayer.score >= enemyPlayer.score) || !enemyPlayer) {
-      setCurrentPlayerHasHigherScore(true)
+    if (
+      (currentPlayer &&
+        enemyPlayer &&
+        currentPlayer.score >= enemyPlayer.score) ||
+      !enemyPlayer
+    ) {
+      setCurrentPlayerHasHigherScore(true);
     } else {
-      setCurrentPlayerHasHigherScore(false)
+      setCurrentPlayerHasHigherScore(false);
     }
   }, [gamingTimer]);
 
   useEffect(() => {
-    if (gamingTimer === 0 && players.length > 1) {
+    if (!gamingTimer) return;
+    
+    if (timerRef.current) {
+      timerRef.current.updateTime(gamingTimer);
+    }
+
+    if (gamingTimer === 1 && players.length > 1) {
       ioInstance?.emit("finish-game");
     }
-  }, [gamingTimer]);
+  }, [gamingTimer, players.length, ioInstance]);
 
   useEffect(() => {
     if (countDown && countDown > 0) {
@@ -68,21 +91,19 @@ const GamePage = () => {
   }, [countDown]);
 
   function startGame(data: z.infer<typeof FormSchema>) {
-
     if (!ioInstance) return;
-    setTimeFormOpen(false)
+    setTimeFormOpen(false);
 
     ioInstance.emit("count-down", 6);
     setTimeout(() => {
-      // ioInstance.emit("game-timer", +data.type);
-      ioInstance.emit("game-timer", +177777777777);
+      ioInstance.emit("game-timer", +data.type);
 
       ioInstance.emit("start-game");
     }, 5000);
   }
 
-  const renderGame = () => {
 
+  const renderGame = useMemo(() => {
     if (!serverConnected || !currentPlayer) {
       return <Loading />;
     }
@@ -116,33 +137,35 @@ const GamePage = () => {
               gameStatus={gameStatus}
               paragraph={paragraph}
               typingErrors={typingErrors}
-              
             />
-            <div className="flex items-center justify-center text-white text-6xl font-semibold italic">
-              <h1>{gamingTimer}</h1>
-            </div>
+            <GamingTimer ref={timerRef} />
+
             <EnemyScreen
               name={enemyPlayer?.name}
               gameId={inviteCode}
               ioInstance={ioInstance}
               gameStatus={gameStatus}
-              paragraph={paragraph}
+              paragraph={enemyParagraph}
             />
           </div>
         ) : (
           <div className="flex flex-col w-full">
             <div className="h-1/6 flex items-center justify-center">
-              <Camper />
+              {/* <Camper /> */}
               <Snowfall snowflakeCount={300} />
               {ioInstance?.id === host ? (
-              <HostGameTimeForm timeFormOpen={timeFormOpen} form={form} startGame={startGame}/>
+                <HostGameTimeForm
+                  timeFormOpen={timeFormOpen}
+                  form={form}
+                  startGame={startGame}
+                />
               ) : (
                 <h1 className="text-center text-2xl items-center">
                   Waiting for host to start battle. Hold on!
                 </h1>
               )}
             </div>
-            <div className="w-full flex h-5/6">
+            <div className="w-full flex h-5/6 z-10">
               <PlayerScreen
                 name={currentPlayer?.name}
                 host={host}
@@ -160,16 +183,28 @@ const GamePage = () => {
                 gameId={inviteCode}
                 ioInstance={ioInstance}
                 gameStatus={gameStatus}
-                paragraph={paragraph}
+                paragraph={enemyParagraph}
               />
             </div>
+            <VSBackdrop />
+              <IceFlooring />
           </div>
         )}
       </>
     );
-  };
+  }, [
+    serverConnected,
+    currentPlayer,
+    gameStatus,
+    players,
+    popScreen,
+    countDown,
+    enemyPlayer,
+    paragraph,
+    enemyParagraph
+  ]);
 
-  return <div className="w-3/4 flex flex-row h-2/3">{renderGame()}</div>;
+  return <div className="w-3/4 flex flex-row h-2/3">{renderGame}</div>;
 };
 
 export default GamePage;

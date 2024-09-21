@@ -19,6 +19,7 @@ const useSocket = () => {
   const [gamingTimer, setGamingTimer] = useState<number | null>(null);
   const [typingErrors, setTypingErrors] = useState(0);
   const [countDown, setCountDown] = useState<number | null>(null);
+  const [enemyParagraph, setEnemyParagraph] = useState<string>("");
 
   const userName = currentUser ? currentUser.displayName : name;
 
@@ -77,7 +78,7 @@ const useSocket = () => {
     });
 
     socket.on("player-left", (id: string) => {
-      socket.emit("finish-game")
+      socket.emit("finish-game");
       toast({ title: "Enemy player left the game!" });
       setPlayers((prev) => prev.filter((player) => player.id !== id));
     });
@@ -99,6 +100,7 @@ const useSocket = () => {
 
     socket.on("game-started", (paragraph: string) => {
       setParagraph(paragraph);
+      setEnemyParagraph(paragraph);
       setGameStatus("in-progress");
     });
 
@@ -113,6 +115,14 @@ const useSocket = () => {
     socket.on("error", (message: string) => {
       toast({ title: message });
     });
+
+    socket.on("send-paragraph", (newParagraph: string) => {
+      setParagraph(newParagraph);
+    });
+
+    socket.on("send-enemy-paragraph", (newEnemyParagraph) => {
+      setEnemyParagraph(newEnemyParagraph);
+    });
   }
 
   function removeListeners(socket: Socket) {
@@ -125,6 +135,8 @@ const useSocket = () => {
     socket.off("game-finished");
     socket.off("new-host");
     socket.off("error");
+    socket.off("send-paragraph");
+    socket.off("send-enemy-paragraph");
   }
 
   const currentPlayer = players.find((player) => player.id === ioInstance?.id);
@@ -143,6 +155,7 @@ const useSocket = () => {
     gamingTimer,
     typingErrors,
     countDown,
+    enemyParagraph
   };
 };
 

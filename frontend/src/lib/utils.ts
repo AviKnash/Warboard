@@ -17,7 +17,8 @@ export const userComments = [
   {
     name: "Sanduni Wijerathne",
     title: "Bunny",
-    description: "Make sure to check for bad typing habit's. such as resorting to only two finger's while trying to type faster.",
+    description:
+      "Make sure to check for bad typing habit's. such as resorting to only two finger's while trying to type faster.",
     imageUrl: pikachu,
   },
   {
@@ -69,11 +70,24 @@ export const countErrors = (actual: string, expected: string) => {
   }, 0);
 };
 
-export const calculateAccuracyPercentage = (errors: number, total: number | undefined) => {
+export const calculateAccuracyPercentage = (
+  errors: number,
+  total: number | undefined
+) => {
   if (total && total > 0) {
     const corrects = total - errors;
     return (corrects / total) * 100;
   }
 
   return 0;
+};
+
+export const truncate = (text: string) => {
+  const firstWord = text.split(" ")[0];
+
+  if (firstWord.length > 7) {
+    return firstWord.slice(0, 7) + "...";
+  }
+
+  return firstWord;
 };

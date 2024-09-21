@@ -55,7 +55,6 @@ const useEngine = () => {
     clearTyped();
   }, [clearTyped, updateWords, resetCountDown, resetTotalTyped]);
 
-  console.log(state);
 
   return { state, words, typed, errors, restart, timeLeft, totalTyped };
 };

@@ -19,17 +19,17 @@ export type IGameContext = {
   popOver: boolean;
   timeLeft: number | null;
   setPopOver: React.Dispatch<React.SetStateAction<boolean>>;
-  setTimeLeft: React.Dispatch<React.SetStateAction<any>>
+  setTimeLeft: React.Dispatch<React.SetStateAction<any>>;
 };
 
 export type IUser =
   | {
       displayName: string;
       photoURL: string;
-      userID:string;
-      email:string,
-      totalGames:number | undefined;
-      gamesWon:number | undefined
+      userID: string;
+      email: string;
+      totalGames: number | undefined;
+      gamesWon: number | undefined;
     }
   | undefined;
 
@@ -60,7 +60,7 @@ export type GameProps = {
   gameStatus: string;
   ioInstance: Socket | undefined;
   paragraph: string;
-  typingErrors:number;
+  typingErrors: number;
 };
 
 export type EnemyGameProps = {
@@ -70,3 +70,17 @@ export type EnemyGameProps = {
   ioInstance: Socket | undefined;
   paragraph: string;
 };
+
+export type WarbyState = "idle" | "excited";
+
+export type TypingStreakValues =
+  | 0
+  | 10
+  | 20
+  | 30
+  | 40
+  | 60
+  | 70
+  | 90
+  | 120
+  | 150;
