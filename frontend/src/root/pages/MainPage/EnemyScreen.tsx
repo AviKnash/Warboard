@@ -1,7 +1,7 @@
 import { truncate } from "@/lib/utils";
 import EnemyTypingParagraph from "../../components/Game/EnemyTypingParagraph";
 import { EnemyGameProps } from "@/types";
-import IcyFloor from '/IcyFloor.png'
+import IcyFloor from '/IcyFloorFlat.png'
 import WarbyAttackEnemy from '/WarbyAttackEnemy.gif'
 
 
