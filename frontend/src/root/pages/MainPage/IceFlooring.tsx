@@ -2,7 +2,7 @@ import Icefloor from "/IcyFloor.png";
 
 const IceFlooring = () => {
   return (
-    <div className="fixed bottom-0 left-0 right-0 w-full overflow-hidden">
+    <div className="fixed bottom-0 left-0 right-0 w-full overflow-hidden z-[-1]">
       <img
         draggable="false"
         src={Icefloor}
