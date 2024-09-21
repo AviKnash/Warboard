@@ -25,6 +25,7 @@ Track your progress and compare your skills with other players on the leaderboar
 - **Backend**: NodeJs using Express
 - **Websockets**: Socket.io for real-time communication between players
 - **Database**: Firebase
+- **Cloud**: Hosted on AWS ( Amplify for frontend. Self-managed EC2 instance with Load balancing for the backend).
 - **Design**: My own custom pixel art for avatars and game elements
 
 
