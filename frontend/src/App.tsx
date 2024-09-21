@@ -1,5 +1,5 @@
 import "./globals.css";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import RootLayout from "./root/RootLayout";
 import Home from "./root/pages/MainPage/Home";
 import AuthLayout from "./auth/AuthLayout";
@@ -7,24 +7,27 @@ import StartGame from "./auth/components/StartGame";
 import { Toaster } from "./components/ui/toaster";
 import LeaderBoard from "./root/pages/MainPage/LeaderBoard";
 import Practice from "./root/pages/Practice/Practice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import MobileDismissPage from "./auth/MobileDismissPage";
 
 const App = () => {
-  const navigate = useNavigate();
-
-  const isMobile = () => {
-    return (
-      /Mobi|Android/i.test(navigator.userAgent) ||
-      window.matchMedia("(max-width: 768px)").matches
-    );
-  };
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    if (isMobile()) {
-      navigate("/mobile-landing");
-    }
-  }, [navigate]);
+    const checkMobile = () => {
+      const mobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth <= 768;
+      setIsMobile(mobile);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  if (isMobile) {
+    return <Navigate to="/mobile-landing" replace />;
+  }
 
   return (
     <main className="h-screen">

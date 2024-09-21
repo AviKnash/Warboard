@@ -5,6 +5,7 @@ import { useGame } from "@/hooks/useGame";
 import { useUserContext } from "@/context/AuthContext";
 import { useGetUser } from "@/hooks/useGetUser";
 import { calculateAccuracyPercentage } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
 export function GameFinishedScreen({
   currentPlayerHasHigherScore,
@@ -22,6 +23,7 @@ export function GameFinishedScreen({
   const accuracy = Math.round(
     calculateAccuracyPercentage(typingErrors, totalTyped)
   );
+  const navigate = useNavigate();
 
   if (userLoggedIn) {
     const { addGame, addUserStats } = useGame();
@@ -45,15 +47,27 @@ export function GameFinishedScreen({
   }
 
   const restartPage = () => {
-    window.location.reload();
+    navigate("/", { replace: true });
   };
 
   return (
     <>
       {currentPlayerHasHigherScore ? (
-        <WinScreen accuracy={accuracy} typingErrors={typingErrors} totalTyped={totalTyped} wpm={wpm} restartPage={restartPage} />
+        <WinScreen
+          accuracy={accuracy}
+          typingErrors={typingErrors}
+          totalTyped={totalTyped}
+          wpm={wpm}
+          restartPage={restartPage}
+        />
       ) : (
-        <LoseScreen accuracy={accuracy} typingErrors={typingErrors} totalTyped={totalTyped} wpm={wpm} restartPage={restartPage} />
+        <LoseScreen
+          accuracy={accuracy}
+          typingErrors={typingErrors}
+          totalTyped={totalTyped}
+          wpm={wpm}
+          restartPage={restartPage}
+        />
       )}
     </>
   );
