@@ -4,7 +4,6 @@ import { GameFinishedScreen } from "./GameFinishedScreen";
 import useSocket from "@/hooks/useSocket";
 import Loading from "@/auth/components/Loading";
 import CountDown from "../../components/Game/CountDown";
-import { Snowfall } from "react-snowfall";
 import EnemyScreen from "./EnemyScreen";
 import PlayerScreen from "./PlayerScreen";
 import WaitingScreen from "../WaitingScreen";
@@ -13,8 +12,10 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import HostGameTimeForm from "./HostGameTimeForm";
 import GamingTimer, { TimerRef } from "@/root/components/Game/GamingTimer";
-import IceFlooring from "./IceFlooring";
 import VSBackdrop from "./VSBackdrop";
+import { FlipWords } from "@/components/ui/flip-words";
+
+const GAME_WAIT_WORDS = ["Waiting for host to start battle. Hold on!","Host seems to be taking their sweet time.","Just a bit more!","Just imagine how slow their typing speed is!"]
 
 const GamePage = () => {
   const {
@@ -143,7 +144,7 @@ const GamePage = () => {
           <div className="flex flex-col w-full">
             <div className="h-1/6 flex items-center justify-center">
               {/* <Camper /> */}
-              <Snowfall snowflakeCount={300} />
+              {/* <Snowfall snowflakeCount={300} /> */}
               {ioInstance?.id === host ? (
                 <HostGameTimeForm
                   timeFormOpen={timeFormOpen}
@@ -152,7 +153,7 @@ const GamePage = () => {
                 />
               ) : (
                 <h1 className="text-center text-2xl items-center">
-                  Waiting for host to start battle. Hold on!
+                  <FlipWords duration={5000} words={GAME_WAIT_WORDS}/>
                 </h1>
               )}
             </div>
@@ -178,7 +179,6 @@ const GamePage = () => {
               />
             </div>
             <VSBackdrop />
-            <IceFlooring />
           </div>
         )}
       </>

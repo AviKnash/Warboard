@@ -4,7 +4,7 @@ export interface TimerRef {
   updateTime: (newTime: number) => void;
 }
 
-const GamingTimer = forwardRef<TimerRef, {}>((_, ref) => {
+const GamingTimer = forwardRef<TimerRef, Record<string,any>>((_, ref) => {
   const [time, setTime] = useState(0);
 
   useImperativeHandle(ref, () => ({

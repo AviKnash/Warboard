@@ -25,7 +25,6 @@ export function GameFinishedScreen({
   );
   const navigate = useNavigate();
 
-  if (userLoggedIn) {
     const { addGame, addUserStats } = useGame();
     const { currentUser } = useUserContext();
     const { user, loading } = useGetUser(currentUser?.userID);
@@ -44,7 +43,7 @@ export function GameFinishedScreen({
         });
       }
     }, [loading]);
-  }
+  
 
   const restartPage = () => {
     navigate("/", { replace: true });

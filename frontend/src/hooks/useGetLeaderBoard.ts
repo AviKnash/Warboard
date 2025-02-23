@@ -34,7 +34,7 @@ export const useGetLeaderBoard = () => {
       const queryGame = query(gameCollectionRef, orderBy("wpm", "desc"));
 
       unsubscribe = onSnapshot(queryGame, async (snapshot) => {
-        let docs: Game[] = [];
+        const docs: Game[] = [];
 
         for (const doc of snapshot.docs) {
           const data = doc.data();
