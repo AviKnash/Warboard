@@ -3,14 +3,16 @@ FROM node:20-alpine
 WORKDIR /backend
 
 COPY package.json ./
+COPY package-lock.json ./
 
-# Install dependencies and ts-node globally
 RUN npm install && npm install -g ts-node typescript
 
 # Add node_modules/.bin to PATH
 ENV PATH /backend/node_modules/.bin:$PATH
 
 COPY . .
+
+RUN npx tsc
 
 EXPOSE 3001
 
