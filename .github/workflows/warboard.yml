@@ -1,42 +1,11 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
-name: Node.js CI/CD
+name: Build and Restart PM2
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
     branches: ["main"]
 
 jobs:
-  lint-and-scan:
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v4
-    - name: With NodeJs V20
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20.x
-
-    - name: Install Deps
-      run: npm ci
-      working-directory: ./frontend
-    
-    - name: Run Lint
-      run: npm run lint
-      working-directory: ./frontend
-    
-    - name: Run CodeQL analysis
-      uses: github/codeql-action/init@v2
-      with:
-        languages: javascript
-    - uses: github/codeql-action/analyze@v2
-
-
   build:
-
     runs-on: self-hosted
 
     strategy:
@@ -50,7 +19,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Install dependancies and build
+    - name: Install dependencies and build
       run: |
         npm ci
         npm run build
