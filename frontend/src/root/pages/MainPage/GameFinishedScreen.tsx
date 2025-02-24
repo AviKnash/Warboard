@@ -30,7 +30,10 @@ export function GameFinishedScreen({
     const { user, loading } = useGetUser(currentUser?.userID);
 
     useEffect(() => {
-      if (userLoggedIn && user && !loading) {
+
+      if(!userLoggedIn) return;
+      
+      if (user && !loading) {
         const userNewTotalGames = user.totalGames + 1;
         const userNewGamesWon = currentPlayerHasHigherScore
           ? user.gamesWon + 1
