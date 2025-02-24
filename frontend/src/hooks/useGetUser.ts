@@ -25,6 +25,8 @@ export const useGetUser = (userID: string | undefined) => {
   const userCollectionRef = collection(db, "user");
 
   useEffect(() => {
+    if(!userID) return;
+
     const unsubscribe = onSnapshot(
       query(userCollectionRef, where("userID", "==", userID)),
       (snapshot) => {
